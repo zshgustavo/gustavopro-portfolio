@@ -472,13 +472,30 @@ p {
   position: absolute;
   bottom: var(--spacing-lg);
   left: var(--spacing-lg);
+}
+
+/* Social Icons Container - Horizontal Layout */
+.social-icons-container {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--spacing-sm);
 }
 
+.social-icons-container.light .social-icon {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+}
+
+.social-icons-container.dark .social-icon {
+  background: rgba(4, 17, 69, 0.1);
+  color: var(--color-blue);
+}
+
 .social-icon {
-  width: 45px;
-  height: 45px;
+  width: 46px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -490,6 +507,7 @@ p {
 
 .social-icon:hover {
   background: var(--color-blue);
+  color: var(--color-white);
   transform: translateY(-3px);
 }
 
@@ -875,6 +893,10 @@ p {
 
 .contact-socials {
   display: flex;
+  align-items: center;
+}
+
+.contact-socials .social-icons-container {
   gap: var(--spacing-sm);
 }
 
@@ -984,6 +1006,10 @@ p {
 
 .footer-socials {
   display: flex;
+  justify-content: center;
+}
+
+.footer-socials .social-icons-container {
   gap: var(--spacing-sm);
 }
 
@@ -994,6 +1020,7 @@ p {
 
 .footer-socials .social-icon:hover {
   background: var(--color-blue);
+  color: var(--color-white);
 }
 
 .footer-copyright {

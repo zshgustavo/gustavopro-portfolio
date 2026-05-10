@@ -30,8 +30,8 @@ function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   
-  // Load events list
-  const { items: events, isLoading } = useContentList('events')
+  // Load events list (per current language)
+  const { items: events, isLoading } = useContentList('events', i18n.language)
 
   // Default sample events for initial setup
   const defaultEvents = [

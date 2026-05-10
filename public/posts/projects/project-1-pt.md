@@ -3,7 +3,7 @@ id: 1
 title: Cloud Cost Agent 
 description: Sistema multi-agentes de IA para análise de custos de nuvem, onde foi aprovado em um projeto de Doutorado na Universidade de Brasília.
 thumbnail: /images/projects/ecommerce.png
-codeUrl: https://github.com/gustavozsh/cloud-cost-analyzer-mcp
+codeUrl: https://github.com/zshgustavo/cloud-cost-analyzer-mcp
 siteUrl: https://y0h0i3cqn6yq.manus.space/
 featured: true
 tags: [ia, crewai, cloud, machine learning, data science]

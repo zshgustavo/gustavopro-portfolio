@@ -64,17 +64,21 @@ export function useContent(section, filename) {
 
 /**
  * useContentList Hook
- * 
- * Loads multiple content files from a section folder.
- * Useful for loading all projects, events, etc.
- * 
- * Since we can't dynamically scan folders in the browser,
- * this hook expects an index.md file that lists all content files.
- * 
+ *
+ * Loads multiple content files from a section folder, with i18n support.
+ *
+ * Index format (index.json):
+ *   { "files": ["event-1", "event-2"] }   // base names without -lang.md
+ *   or legacy: { "files": ["event-1.md"] } // also supported
+ *
+ * For each entry, the hook tries `<base>-<lang>.md` first and falls back to
+ * `<base>-pt.md`, then `<base>.md` so partial translations don't break the UI.
+ *
  * @param {string} section - The section folder name
+ * @param {string} [lang='pt'] - Language code (pt | en)
  * @returns {Object} { items, isLoading, error }
  */
-export function useContentList(section) {
+export function useContentList(section, lang = 'pt') {
   const [items, setItems] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -85,9 +89,8 @@ export function useContentList(section) {
         setIsLoading(true)
         setError(null)
 
-        // First, try to load the index file that lists all content
         const indexResponse = await fetch(`/posts/${section}/index.json`)
-        
+
         if (!indexResponse.ok) {
           setItems([])
           setIsLoading(false)
@@ -95,23 +98,31 @@ export function useContentList(section) {
         }
 
         const index = await indexResponse.json()
-        
-        // Load each content file listed in the index
+
         const loadedItems = await Promise.all(
-          index.files.map(async (filename) => {
-            try {
-              const response = await fetch(`/posts/${section}/${filename}`)
-              if (!response.ok) return null
-              
-              const text = await response.text()
-              return parseMarkdown(text)
-            } catch {
-              return null
+          index.files.map(async (entry) => {
+            // Strip .md if the index still uses the legacy format
+            const base = entry.replace(/\.md$/, '').replace(/-(pt|en)$/, '')
+            const candidates = [
+              `${base}-${lang}.md`,
+              `${base}-pt.md`,
+              `${base}.md`,
+            ]
+            for (const filename of candidates) {
+              try {
+                const response = await fetch(`/posts/${section}/${filename}`)
+                if (response.ok) {
+                  const text = await response.text()
+                  return parseMarkdown(text)
+                }
+              } catch {
+                // try the next candidate
+              }
             }
+            return null
           })
         )
 
-        // Filter out any null entries (failed loads)
         setItems(loadedItems.filter(Boolean))
       } catch (err) {
         console.log(`Index file not found for section: ${section}`)
@@ -123,7 +134,7 @@ export function useContentList(section) {
     }
 
     loadContentList()
-  }, [section])
+  }, [section, lang])
 
   return { items, isLoading, error }
 }

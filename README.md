@@ -59,7 +59,7 @@ Antes de começar, certifique-se de ter instalado:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/gustavozsh/gustavopro-portfolio.git
+git clone https://github.com/zshgustavo/gustavopro-portfolio.git
 cd gustavopro-portfolio
 ```
 
@@ -151,6 +151,30 @@ Conteúdo do projeto em Markdown...
 - **projects** - Portfólio de projetos
 - **events** - Eventos e palestras
 
+### 🌐 Tradução automática (PT → EN)
+
+A versão em inglês de cada arquivo Markdown é gerada por IA em tempo de build.
+Você escreve **apenas** o arquivo `*-pt.md`; o script `scripts/translate.mjs`
+chama o Google Gemini e cria/atualiza o `*-en.md` correspondente.
+
+```bash
+# 1. Crie sua chave em https://aistudio.google.com/app/apikey
+# 2. Copie .env.example → .env e preencha GEMINI_API_KEY
+cp .env.example .env
+
+# Tradução incremental (apenas arquivos PT mais novos que o EN)
+npm run translate
+
+# Forçar regeneração de todos os EN
+npm run translate:force
+```
+
+Convenções:
+
+- Fonte única: `*-pt.md` (events, projects, about, contact, hero).
+- O `prebuild` roda a tradução automaticamente antes de `vite build`.
+- Apenas `title`, `subtitle`, `description` e `role` do frontmatter são traduzidos. URLs, datas, ids, tags, paths e nomes próprios ficam inalterados.
+
 ## ⚙️ Configuração de Ambiente
 
 Para funcionalidades adicionais (como upload de arquivos ou autenticação), crie um arquivo `.env` na raiz do projeto:
@@ -212,9 +236,9 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ### 🔗 Links
 
-- GitHub: [@gustavozsh](https://github.com/gustavozsh)
+- GitHub: [@zshgustavo](https://github.com/zshgustavo)
 - LinkedIn: [Gustavo Santos](https://linkedin.com/in/gustavozsh)
-- Portfolio: [gustavopro-portfolio](https://github.com/gustavozsh/gustavopro-portfolio)
+- Portfolio: [gustavopro-portfolio](https://github.com/zshgustavo/gustavopro-portfolio)
 
 ## 🙏 Agradecimentos
 
