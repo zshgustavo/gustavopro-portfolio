@@ -1,10 +1,10 @@
 ---
 links:
-  github: https://github.com/seu-usuario
-  linkedin: https://linkedin.com/in/seu-usuario
-  email: mailto:seu@email.com
-  twitter: https://twitter.com/seu-usuario
-  instagram: 
+  github: https://github.com/zshgustavo
+  linkedin: https://www.linkedin.com/in/gustavribeiro
+  email: gustavo@datacloudverse.com
+  twitter: https://x.com/gustavribeiro
+  instagram: https://www.instagram.com/gustavribeiro/
   youtube: 
 ---
 

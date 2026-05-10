@@ -14,10 +14,13 @@ import { useContent } from '../hooks/useContent'
  * Content is loaded from the 'about' markdown files for dynamic updates.
  */
 function Hero() {
-  const { t } = useTranslation()
-  
-  // Load hero content from markdown (we'll use the about content for name/role)
-  const { content: heroContent } = useContent('about', 'hero')
+  const { t, i18n } = useTranslation()
+
+  // Load hero content from markdown (per language, with PT fallback)
+  const lang = i18n.language
+  const { content: heroLang } = useContent('about', `hero-${lang}`)
+  const { content: heroPt } = useContent('about', 'hero-pt')
+  const heroContent = heroLang || heroPt
 
   // Default values if no content file exists yet
   const name = heroContent?.name || 'Seu Nome'

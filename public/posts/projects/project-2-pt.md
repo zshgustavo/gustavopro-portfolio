@@ -3,7 +3,7 @@ id: 2
 title: Desenvolvendo Agentes para Monitorar Publicações Oficiais do Brasil 
 description: Este projeto implementa um sistema de cinco agentes de IA especializados para automatizar a extração, processamento e organização de dados do Diário Oficial da União (DOU) do Brasil.
 thumbnail: /images/projects/dashboard.png
-codeUrl: https://github.com/gustavozsh/brazil-public-notices
+codeUrl: https://github.com/zshgustavo/brazil-public-notices
 siteUrl: 
 featured: false
 tags: [ia, data processing, web scrapping, apis]

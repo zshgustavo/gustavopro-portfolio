@@ -29,8 +29,8 @@ function Projects() {
   const { t, i18n } = useTranslation()
   const [filter, setFilter] = useState('all')
   
-  // Load projects list
-  const { items: projects, isLoading } = useContentList('projects')
+  // Load projects list (per current language)
+  const { items: projects, isLoading } = useContentList('projects', i18n.language)
 
   // Default sample projects for initial setup
   const defaultProjects = [
