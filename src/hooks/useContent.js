@@ -157,7 +157,11 @@ export function useContentList(section, lang = 'pt') {
  * @returns {Object} Parsed object with frontmatter fields and body
  */
 function parseMarkdown(text) {
-  const frontmatterRegex = /^---\n([\s\S]*?)\n---/
+  // Strip optional UTF-8 BOM that some editors add on save.
+  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1)
+
+  // Tolerate both LF and CRLF line endings (Windows ↔︎ Linux).
+  const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---/
   const match = text.match(frontmatterRegex)
 
   if (!match) {
@@ -170,7 +174,7 @@ function parseMarkdown(text) {
 
   // Parse YAML-like frontmatter (simple key: value pairs)
   const frontmatter = {}
-  const lines = frontmatterText.split('\n')
+  const lines = frontmatterText.split(/\r?\n/)
   
   let currentKey = null
   let isMultiline = false

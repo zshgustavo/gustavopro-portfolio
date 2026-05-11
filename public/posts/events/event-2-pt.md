@@ -1,19 +1,10 @@
 ---
 id: 2
-title: TDC Summit IA 
-description: Coordenador e palestrante da edição do TDC em Brasília, o maior evento de tecnologia da America Latina.
-date: 2024-10-26
-location: Brasília, DF
-type: speaker and coordinator
-thumbnail: /images/events/react-summit.jpg
-photos: [/images/events/react-summit-1.jpg, /images/events/react-summit-2.jpg]
+title: GDG Summit Lima 2025
+description: Encontro anual dos organizadores do Google Developer Groups da América Latina, com keynotes e workshops sobre as novidades do Google.
+date: 2025-08
+location: Lima, Peru
+type: speaker
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/portfolio/events/gdg-summit-lima-2025/cover.jpg
+albumUrl: 
 ---
-
-Realizei um workshop sobre multi-agentes de IA e coordenei a trilha de Generative IA.
-
-## Tópicos Abordados
-
-- Coordenação e organização das palestras dos palcos principais sobre Generative AI
-- Networking com Oracle, Microsoft, Sigma
-- Crew AI
-- Machine Learning

@@ -1,16 +1,10 @@
 ---
 id: 1
-title:  GDG Summit Lima
-description: Encontro anual dos organizadores do Google Developer Groups.
-date: 2025-08
-location: Lima, Peru
-type: attendee
-thumbnail: /images/events/techconf.jpg
-photos: [/images/events/techconf-1.jpg, /images/events/techconf-2.jpg, /images/events/techconf-3.jpg]
+title: Feira de Carreiras UCB 2º Edição
+description: Segunda edição da Feira de Carreiras da Universidade Católica de Brasília, conectando estudantes e profissionais de tecnologia.
+date: 2026-05
+location: Brasília, DF
+type: speaker
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/portfolio/events/feira-carreiras-ucb-2026/cover.jpg
+albumUrl: 
 ---
-
-
-## Destaques
-
-- Diversas palestras sobre Google AI, Gemini, Comunidade, e as novidades para o ano seguinte
-- Networking com profissionais do Google

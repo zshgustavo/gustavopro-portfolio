@@ -65,10 +65,9 @@ Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`
           {/* Right Side - Content */}
           <div className="about-right">
             <h2>{displayContent.title || t('about.title')}</h2>
-            <p className="about-subtitle">{t('about.explore')}</p>
-            
+
             <div className="about-separator"></div>
-            
+
             <div className="about-content">
               {isLoading ? (
                 <p>{t('common.loading')}</p>

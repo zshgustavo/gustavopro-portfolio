@@ -1,20 +1,10 @@
 ---
 id: 3
-title: Campus Party
-description: Speaker at the SERPRO stage on Responsible AI at Google.
-date: 2024-06-10
+title: TDC Summit AI
+description: Special edition of The Developer's Conference dedicated to Artificial Intelligence, bringing together the Brazilian developer community.
+date: 2025-10
 location: Brasília, DF
 type: speaker
-thumbnail: /images/events/workshop-js.jpg
-photos: [/images/events/workshop-js-1.jpg]
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/portfolio/events/tdc-summit-ia-2025/cover.jpg
+albumUrl: 
 ---
-
-
-Intensive JavaScript workshop focusing on advanced concepts.
-
-## Syllabus
-
-- Destructuring and spread operators
-- Promises and async/await
-- Closures and currying
-- JavaScript design patterns

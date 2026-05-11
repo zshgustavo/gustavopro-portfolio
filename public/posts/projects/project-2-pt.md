@@ -19,4 +19,4 @@ Dashboard de analytics para monitoramento de métricas empresariais.
 - **Agente Processador (DOU-Processor)**: Transforma o conteúdo bruto em dados estruturados usando técnicas de processamento de linguagem natural.
 - **Agente Organizador (DOU-Organizer)**: Compila os dados em formato CSV com colunas estruturadas.
 - **Agente de Busca (DOU-Searcher)**: Permite a recuperação eficiente de informações específicas dentro dos dados organizados.
-- **Agente Coordenador (DOU-Coordinator)**: Gerencia o fluxo de trabalho entre todos os outros agentes.
+- **Agente Coordenador (DOU-Coordinator)**: Gerencia o fluxo de trabalho entre todo

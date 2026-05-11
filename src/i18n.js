@@ -40,6 +40,7 @@ const resources = {
         title: 'EVENTOS',
         subtitle: 'Eventos que coordenei ou palestrei',
         viewPhotos: 'Ver Fotos',
+        viewMore: 'Ver mais',
         coordinated: 'Coordenado',
         speaker: 'Palestrante'
       },
@@ -105,6 +106,7 @@ const resources = {
         title: 'EVENTS',
         subtitle: 'Events I coordinated or spoke at',
         viewPhotos: 'View Photos',
+        viewMore: 'See more',
         coordinated: 'Coordinated',
         speaker: 'Speaker'
       },

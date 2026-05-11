@@ -16,5 +16,4 @@ Exemplo:
 - linkedin: https://linkedin.com/in/seuusuario
 - email: mailto:seuemail@exemplo.com
 - twitter: https://twitter.com/seuusuario
-- instagram: https://instagram.com/seuusuario
-- youtube: https://youtube.com/@seucanal
+- instagram: https://i

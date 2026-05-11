@@ -15,5 +15,4 @@ Aplicativo de produtividade para gerenciamento de tarefas pessoais e profissiona
 
 - Interface intuitiva com drag-and-drop
 - Sincronização entre dispositivos
-- Lembretes com notificações push
-- Modo offline
+- Lembretes com notificações pus

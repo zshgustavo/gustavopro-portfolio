@@ -17,4 +17,3 @@ Productivity application for managing personal and professional tasks.
 - Intuitive interface with drag-and-drop
 - Cross-device synchronization
 - Reminders with push notifications
-- Offline mode

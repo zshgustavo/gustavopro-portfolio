@@ -1,0 +1,27 @@
+# Force LF line endings on text files so the in-browser markdown parser keeps
+# working on Windows checkouts (parser regex relies on \n).
+* text=auto eol=lf
+
+*.md      text eol=lf
+*.json    text eol=lf
+*.js      text eol=lf
+*.jsx     text eol=lf
+*.mjs     text eol=lf
+*.cjs     text eol=lf
+*.ts      text eol=lf
+*.tsx     text eol=lf
+*.css     text eol=lf
+*.html    text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+
+# Binaries — never touch.
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.svg     binary
+*.ico     binary
+*.webp    binary
+*.woff    binary
+*.woff2   binary

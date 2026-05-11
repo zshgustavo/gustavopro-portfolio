@@ -20,4 +20,4 @@ Back-end, MCP e modelo de ML desenvolvidos no Google Cloud e crew AI, front-end 
 - Análise Abrangente: TCO completo considerando todos os serviços
 - Interface Web Moderna: React com Tailwind CSS e animações
 - API RESTful: Endpoints completos para integração
-- Templates Pré-configurados: Para diferentes tipos de workload
+- Templates Pré-configurados: Para diferen

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContentList } from '../hooks/useContent'
 import { ExternalLink, Github } from 'lucide-react'
@@ -27,8 +26,7 @@ import { ExternalLink, Github } from 'lucide-react'
  */
 function Projects() {
   const { t, i18n } = useTranslation()
-  const [filter, setFilter] = useState('all')
-  
+
   // Load projects list (per current language)
   const { items: projects, isLoading } = useContentList('projects', i18n.language)
 
@@ -68,10 +66,10 @@ function Projects() {
 
   const displayProjects = projects.length > 0 ? projects : defaultProjects
 
-  // Filter projects
-  const filteredProjects = filter === 'all' 
-    ? displayProjects 
-    : displayProjects.filter(p => p.featured)
+  // Show every project listed in posts/projects/index.json.
+  // (The `featured` flag in frontmatter stays available for future use,
+  // e.g. highlighting a "featured" badge or sorting.)
+  const filteredProjects = displayProjects
 
   return (
     <section className="projects-section section" id="projects">
@@ -82,22 +80,6 @@ function Projects() {
           <p>{t('projects.subtitle')}</p>
         </div>
 
-        {/* Filter Buttons */}
-        <div className="projects-filter">
-          <button 
-            className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-            onClick={() => setFilter('all')}
-          >
-            {t('projects.all')}
-          </button>
-          <button 
-            className={`filter-btn ${filter === 'featured' ? 'active' : ''}`}
-            onClick={() => setFilter('featured')}
-          >
-            {t('projects.featured')}
-          </button>
-        </div>
-
         {/* Projects Grid */}
         {isLoading ? (
           <div className="flex-center" style={{ padding: '4rem' }}>
@@ -106,9 +88,9 @@ function Projects() {
         ) : (
           <div className="projects-grid">
             {filteredProjects.map((project, index) => (
-              <ProjectCard 
-                key={project.id || index} 
-                project={project} 
+              <ProjectCard
+                key={project.id || index}
+                project={project}
                 t={t}
               />
             ))}
@@ -143,28 +125,27 @@ function ProjectCard({ project, t }) {
 
       {/* Project Info */}
       <div className="project-info">
-        <h3>{title}</h3>
+        <h3>
+          {(siteUrl || codeUrl) ? (
+            <a
+              href={siteUrl || codeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-title-link"
+            >
+              {title}
+            </a>
+          ) : (
+            title
+          )}
+        </h3>
         <p>{description}</p>
 
         {/* Tags */}
         {tags && tags.length > 0 && (
-          <div style={{ 
-            display: 'flex', 
-            gap: '0.5rem', 
-            marginBottom: '1rem',
-            flexWrap: 'wrap'
-          }}>
+          <div className="project-tags">
             {tags.map((tag, i) => (
-              <span 
-                key={i}
-                style={{
-                  fontSize: '0.7rem',
-                  padding: '2px 8px',
-                  background: 'rgba(4, 17, 69, 0.3)',
-                  borderRadius: '20px',
-                  color: 'rgba(255,255,255,0.7)'
-                }}
-              >
+              <span key={i} className="project-tag">
                 {tag}
               </span>
             ))}
