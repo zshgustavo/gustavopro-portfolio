@@ -33,7 +33,7 @@ Versão em produção: [gustavosantos.dev](https://gustavosantos.dev)
 
 ## Licença
 
-MIT.
+Uso pessoal e educacional — código aberto para estudo e inspiração, **proibida cópia ou redistribuição**. Veja [`LICENSE.md`](./LICENSE.md) para os termos completos.
 
 ---
 
