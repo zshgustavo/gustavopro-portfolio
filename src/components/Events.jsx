@@ -32,9 +32,19 @@ function Events() {
   const { items: events, isLoading } = useContentList('events', i18n.language)
 
   // Format date as "month year" (no day) — events are typically scoped to a month.
+  // Parse YYYY-MM explicitly in LOCAL time. Using `new Date('2025-08')` would
+  // be interpreted as UTC midnight and shift to the previous month in
+  // negative-offset timezones (e.g. America/Sao_Paulo).
   const formatDate = (dateString) => {
     if (!dateString) return ''
-    const date = new Date(dateString)
+    const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(dateString)
+    const date = match
+      ? new Date(
+          Number(match[1]),
+          Number(match[2]) - 1,
+          Number(match[3] || 1),
+        )
+      : new Date(dateString)
     if (Number.isNaN(date.getTime())) return ''
     return date.toLocaleDateString(
       i18n.language === 'pt' ? 'pt-BR' : 'en-US',

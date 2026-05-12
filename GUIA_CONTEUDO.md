@@ -50,7 +50,7 @@ Tudo dentro de `public/posts/` é estático e servido pelo Vite no caminho `/pos
    date: 2026-03                            # formato YYYY-MM
    location: Cidade, UF
    type: speaker                            # ou "coordinated"
-   thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/portfolio/events/nome-do-evento/cover.jpg
+   thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/gustavopro-portfolio/events/nome-do-evento/cover.jpg
    albumUrl: https://...                    # link do álbum externo (opcional)
    ---
    ```
@@ -84,7 +84,7 @@ Mesmo fluxo dos eventos, com o template `samples/project-template.md`. Campos pr
 id: 4
 title: Nome do Projeto
 description: Resumo curto.
-thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/portfolio/projects/nome-do-projeto/cover.png
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/gustavopro-portfolio/projects/nome-do-projeto/cover.png
 codeUrl: https://github.com/zshgustavo/nome-do-repo
 siteUrl: https://...                        # opcional
 featured: true                              # campo livre (todos do index.json aparecem)
