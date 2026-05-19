@@ -10,15 +10,15 @@ tags: [ia, crewai, cloud, machine learning, data science]
 ---
 
 
-The Cloud Cost Agent is a comprehensive cloud cost analysis system that utilizes cutting-edge technologies such as CrewAI and Model Context Protocol (MCP) to provide well-founded recommendations on which cloud provider to use.
+The Cloud Cost Agent is a comprehensive cloud cost analysis system that utilizes cutting-edge technologies like CrewAI and Model Context Protocol (MCP) to provide well-founded recommendations on which cloud provider to use.
 
-Back-end, MCP, and ML model developed on Google Cloud and CrewAI, front-end developed via Manus.
+Back-end, MCP, and ML model developed on Google Cloud and CrewAI; front-end developed via Manus.
 
 ## Features
 
-- Compute Analysis: Compares EC2 (AWS) vs Compute Engine (GCP) instances
-- Storage Analysis: Compares S3 (AWS) vs Cloud Storage (GCP)
+- Compute Analysis: Compares EC2 (AWS) instances vs. Compute Engine (GCP)
+- Storage Analysis: Compares S3 (AWS) vs. Cloud Storage (GCP)
 - Comprehensive Analysis: Full TCO considering all services
 - Modern Web Interface: React with Tailwind CSS and animations
-- RESTful API: Complete endpoints for integration
+- RESTful API: Full endpoints for integration
 - Pre-configured Templates: For differen

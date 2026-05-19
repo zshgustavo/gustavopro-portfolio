@@ -1,7 +1,7 @@
 ---
 id: 3
-title: TDC Summit AI
-description: Special edition of The Developer's Conference dedicated to Artificial Intelligence, bringing together the Brazilian developer community.
+title: TDC AI Summit
+description: A special edition of The Developer's Conference dedicated to Artificial Intelligence, bringing together the Brazilian developer community.
 date: 2025-10
 location: Brasília, DF
 type: speaker
