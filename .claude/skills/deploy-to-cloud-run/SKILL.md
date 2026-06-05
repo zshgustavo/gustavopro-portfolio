@@ -30,6 +30,8 @@ Before running this skill, ensure you have:
 
 ### 1. Configure GitHub Secrets
 
+Before providing the workflow file, ask the user to confirm they have completed the setup steps and added the required secrets to their GitHub repository.
+
 Add these secrets to your GitHub repository (Settings → Secrets and variables → Actions):
 
 - `GCP_PROJECT_ID`: Your GCP project ID
@@ -65,12 +67,11 @@ CMD ["http-server", "dist", "-p", "8080", "--gzip", "-c-1"]
 
 ### 3. Generate Workflow File
 
-Ask the skill to create the GitHub Actions workflow file at `.github/workflows/deploy-to-cloud-run.yml` with:
+Create the GitHub Actions workflow file at `.github/workflows/deploy-to-cloud-run.yml` with:
 - Node 20 build environment
-- npm ci for dependencies
-- Vite build (`npm run build`)
+- Detect the package manager used in the repository (npm, yarn, pnpm, or bun) and adjust the workflow and Dockerfile build instructions accordingly (default to npm if undetermined)
 - Docker image creation and GCR push
-- Cloud Run deployment
+- Cloud Run deployment (use the google-github-actions/deploy-cloudrun action)
 
 ### 4. Verify Deployment
 

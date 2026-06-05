@@ -40,11 +40,6 @@ loadDotenv(resolve(ROOT, '.env'))
 const API_KEY = process.env.GEMINI_API_KEY
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite'
 
-if (!API_KEY && !DRY_RUN) {
-  console.error('✗ Missing GEMINI_API_KEY. Add it to .env at the project root.')
-  process.exit(1)
-}
-
 // ── frontmatter keys eligible for translation ──────────────────────────────
 // Everything else (id, date, urls, paths, tags, photos, type, etc.) stays as-is.
 const TRANSLATABLE_KEYS = ['title', 'subtitle', 'description', 'role']
@@ -103,6 +98,11 @@ async function main() {
         console.log('  (dry run — would call Gemini for these keys:', Object.keys(payload), ')')
         processed++
         continue
+      }
+
+      if (!API_KEY && !DRY_RUN) {
+        console.error(`✗ Missing GEMINI_API_KEY. Required to translate: ${rel}`)
+        process.exit(1)
       }
 
       const translated = await translateBatch(payload)
@@ -270,4 +270,3 @@ main().catch((err) => {
   console.error(err)
   process.exit(1)
 })
-
