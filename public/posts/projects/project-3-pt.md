@@ -1,18 +1,10 @@
 ---
 id: 3
-title: Mobile App - Task Manager
-description: Aplicativo mobile de gerenciamento de tarefas desenvolvido com React Native. Sincronização em nuvem e notificações push.
-thumbnail: /images/projects/taskapp.png
-codeUrl: https://github.com/seu-usuario/task-manager
-siteUrl: https://play.google.com/store/apps
+title: HoraGram
+description: HoraGram é o seu assistente especializado em otimização de engajamento no Instagram. Ele analisa o horário atual da postagem e avisa se este é o momento ideal para publicar fotos no feed ou stories. Fornece uma estimativa do potencial de engajamento e sugere um horário alternativo caso o momento atual não seja ideal. Seu objetivo é ajudar a maximizar o engajamento nas redes sociais e tornar suas publicações mais eficazes.
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_1280,h_640,c_fill,q_auto,f_auto/HoraGram-cover_wrhh2n.jpg
+codeUrl: 
+siteUrl: https://aistudio.instagram.com/ai/656131267166515/?utm_source=share
 featured: true
-tags: [react-native, firebase, expo]
+tags: [meta ai, instagram ai, analise de conteudo]
 ---
-
-Aplicativo de produtividade para gerenciamento de tarefas pessoais e profissionais.
-
-## Recursos
-
-- Interface intuitiva com drag-and-drop
-- Sincronização entre dispositivos
-- Lembretes com notificações pus

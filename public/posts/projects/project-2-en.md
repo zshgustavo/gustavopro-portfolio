@@ -1,23 +1,10 @@
 ---
 id: 2
-title: Developing Agents to Monitor Official Brazilian Publications
-description: This project implements a system of five specialized AI agents to automate the extraction, processing, and organization of data from Brazil's Official Federal Gazette (DOU).
-thumbnail: /images/projects/dashboard.png
-codeUrl: https://github.com/zshgustavo/brazil-public-notices
-siteUrl: 
-featured: false
-tags: [ia, data processing, web scrapping, apis]
+title: DataWiki - Specification Generator
+description: AI-powered documentation generator for Data, Cloud, and ML teams using Google Gemini. Automates data architectures, cloud solutions, contracts, and governance docs.
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_1280,h_640,c_fill,q_auto,f_auto/datawiki-03-cover_nj2kj7.jpg
+codeUrl: https://github.com/zshgustavo/data-specs-generator
+siteUrl: https://dataengine-wiki-data-specs-generator-349644318826.us-west1.run.app
+featured: true
+tags: [documentation generator, cloud solutions, data specification]
 ---
-
-
-Analytics dashboard for monitoring business metrics.
-
-## Overview 
-
-- The system consists of five agents working in tandem:
-
-- **DOU-Collector Agent**: Responsible for accessing the official DOU website and extracting raw content from publications.
-- **DOU-Processor Agent**: Transforms raw content into structured data using natural language processing techniques.
-- **DOU-Organizer Agent**: Compiles the data into CSV format with structured columns.
-- **DOU-Searcher Agent**: Enables efficient retrieval of specific information within the organized data.
-- **DOU-Coordinator Agent**: Manages the workflow between all

@@ -5,6 +5,6 @@ description: Commemorative 10-year edition of DevFest Cerrado, the annual GDG co
 date: 2024-11
 location: Goiânia, GO
 type: speaker
-thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/gustavopro-portfolio/events/devfest-cerrado-2025/cover.jpg
-albumUrl: 
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/IMG_3126_ibtelj.jpg
+albumUrl: https://photos.app.goo.gl/vCBMTBBETbJZpnRy6
 ---

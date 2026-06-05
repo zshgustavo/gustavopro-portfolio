@@ -37,11 +37,11 @@ Uso pessoal e educacional — código aberto para estudo e inspiração, **proib
 
 ---
 
-<div style="text-align: center;">
+<div align="center">
 
 © 2026 Gustavo Ribeiro dos Santos
 
 
 [LinkedIn](https://linkedin.com/in/gustavribeiro) · [GitHub](https://github.com/zshgustavo)
 
----
+</div>

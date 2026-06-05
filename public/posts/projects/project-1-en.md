@@ -1,24 +1,10 @@
 ---
 id: 1
-title: Cloud Cost Agent
-description: Multi-agent AI system for cloud cost analysis, approved as part of a PhD project at the University of Brasília.
-thumbnail: /images/projects/ecommerce.png
-codeUrl: https://github.com/zshgustavo/cloud-cost-analyzer-mcp
-siteUrl: https://y0h0i3cqn6yq.manus.space/
+title: FluentOps
+description: Immersive AI-powered language training platform that helps professionals sharpen executive communication, fluency, and corporate diplomacy through realistic video-call simulations and advanced writing exercises.
+thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_1280,h_640,c_fill,q_auto,f_auto/FluentOps_OpenGraph_eynpp4.jpg
+codeUrl: https://github.com/zshgustavo/fluentops-ai-app
+siteUrl: https://fluentops-ai-app-992143396289.us-east1.run.app/
 featured: true
-tags: [ia, crewai, cloud, machine learning, data science]
+tags: [EdTech, TreineSeuIngles, PraticaDeFluencia, AprendizadoDeIdiomas]
 ---
-
-
-The Cloud Cost Agent is a comprehensive cloud cost analysis system that utilizes cutting-edge technologies like CrewAI and Model Context Protocol (MCP) to provide well-founded recommendations on which cloud provider to use.
-
-Back-end, MCP, and ML model developed on Google Cloud and CrewAI; front-end developed via Manus.
-
-## Features
-
-- Compute Analysis: Compares EC2 (AWS) instances vs. Compute Engine (GCP)
-- Storage Analysis: Compares S3 (AWS) vs. Cloud Storage (GCP)
-- Comprehensive Analysis: Full TCO considering all services
-- Modern Web Interface: React with Tailwind CSS and animations
-- RESTful API: Full endpoints for integration
-- Pre-configured Templates: For differen

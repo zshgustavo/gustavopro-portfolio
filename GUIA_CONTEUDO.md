@@ -77,14 +77,14 @@ Tudo dentro de `public/posts/` é estático e servido pelo Vite no caminho `/pos
 
 ## Adicionar um novo projeto
 
-Mesmo fluxo dos eventos, com o template `samples/project-template.md`. Campos próprios:
+Mesmo fluxo dos eventos, com o template `samples/project-template.md`. **Thumbnail vem direto da OG image do GitHub** (a "Social preview" do repositório), então não precisa fazer upload manual no Cloudinary. Campos próprios:
 
 ```yaml
 ---
 id: 4
 title: Nome do Projeto
 description: Resumo curto.
-thumbnail: https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto,c_fill,ar_4:3/gustavopro-portfolio/projects/nome-do-projeto/cover.png
+thumbnail: https://opengraph.githubassets.com/1/zshgustavo/nome-do-repo
 codeUrl: https://github.com/zshgustavo/nome-do-repo
 siteUrl: https://...                        # opcional
 featured: true                              # campo livre (todos do index.json aparecem)
