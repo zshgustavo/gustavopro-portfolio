@@ -2,7 +2,7 @@
 
 Código-fonte do meu portfólio pessoal: uma single-page application com seções de bio, projetos, eventos e contato, bilíngue (PT/EN) e com gerenciamento de conteúdo via Markdown.
 
-Versão em produção: [xxxx.dev]()
+Versão em produção: [gustavosantospro.com - portfolio](https://gustavopro-portfolio-992143396289.us-central1.run.app)
 
 ## Stack
 
