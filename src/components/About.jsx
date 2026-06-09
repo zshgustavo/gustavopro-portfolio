@@ -61,7 +61,7 @@ Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`
             </div>
             <div className="about-image-wrapper about-image-wrapper--transparent">
               <img
-                src="https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto/Design_sem_nome_gpkg6f.png"
+                src="https://res.cloudinary.com/dawnv7igk/image/upload/w_800,q_auto,f_auto/Design_sem_nome_tesskt.png"
                 alt="Certificações"
                 className="about-photo"
                 onError={(e) => {
