@@ -45,17 +45,28 @@ Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`
     <section className="about-section section section-light" id="about">
       <div className="container">
         <div className="about-container">
-          {/* Left Side - Image */}
+          {/* Left Side - Images */}
           <div className="about-left">
             <div className="about-image-wrapper">
-              <img 
+              <img
                 src="/images/about.png"
                 alt={t('about.title')}
                 className="about-photo"
                 onError={(e) => {
-                  // Fallback gradient if image doesn't load
                   e.target.style.display = 'none'
                   e.target.parentElement.style.background = 'linear-gradient(135deg, #E8E8E8 0%, #041145 100%)'
+                  e.target.parentElement.style.minHeight = '400px'
+                }}
+              />
+            </div>
+            <div className="about-image-wrapper">
+              <img
+                src="/images/about-2.png"
+                alt={t('about.title')}
+                className="about-photo"
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                  e.target.parentElement.style.background = 'linear-gradient(135deg, #041145 0%, #E8E8E8 100%)'
                   e.target.parentElement.style.minHeight = '400px'
                 }}
               />

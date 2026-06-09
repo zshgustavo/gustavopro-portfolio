@@ -2,7 +2,7 @@
 links:
   github: https://github.com/zshgustavo
   linkedin: https://www.linkedin.com/in/gustavribeiro
-  email: gustavo@datacloudverse.com
+  email: mailto:contato@gustavosantospro.com
   twitter: https://x.com/gustavribeiro
   instagram: https://www.instagram.com/gustavribeiro/
   youtube: 

@@ -1,7 +1,7 @@
 ---
 title: CONTATO
 subtitle: EXPLORE
-email: seu@email.com
+email: contato@gustavosantospro.com
 formEndpoint: https://formspree.io/f/YOUR_FORM_ID
 ---
 

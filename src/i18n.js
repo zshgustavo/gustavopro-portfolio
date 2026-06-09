@@ -54,7 +54,7 @@ const resources = {
         message: 'Mensagem',
         submit: 'ENVIAR',
         namePlaceholder: 'Seu nome',
-        emailPlaceholder: 'zshgustavo@gmail.com',
+        emailPlaceholder: 'seu@email.com',
         messagePlaceholder: 'Sua mensagem...'
       },
       // Footer

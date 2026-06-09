@@ -40,7 +40,7 @@ function Navbar({ currentLang, onChangeLang }) {
       {/* Logo - visible only after scroll or on mobile */}
       <div className="navbar-logo" style={{ opacity: isScrolled ? 1 : 0 }}>
         <svg viewBox="0 0 50 50" fill="currentColor" style={{ color: '#fff' }}>
-          <text x="10" y="35" fontSize="30" fontWeight="bold" fontFamily="Poppins">P</text>
+          <text x="3" y="36" fontSize="26" fontWeight="bold" fontFamily="Poppins">GS</text>
         </svg>
       </div>
 

@@ -33,7 +33,7 @@ ESTE SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIAS DE QUALQUER TIPO, EXPRESS
 
 Para usos que excedam o permitido acima — incluindo licenciamento comercial, uso em projetos derivados públicos ou colaborações —, entre em contato:
 
-- LinkedIn: [linkedin.com/in/gustavozsh](https://linkedin.com/in/gustavozsh)
+- LinkedIn: [linkedin.com/in/gustavribeiro](https://linkedin.com/in/gustavribeiro)
 - GitHub: [@zshgustavo](https://github.com/zshgustavo)
 
 ---
@@ -48,6 +48,6 @@ This repository — including code, design, text, images, and other content — 
 
 **You may not:** copy, redistribute, or host this project as your own (in whole or in part); fork it publicly with the same visual identity, biography, or section content; use it commercially without prior written permission; remove copyright notices; or claim authorship over any original part of this work.
 
-Open-source dependencies remain under their own licenses. For commercial licensing or derivative collaborations, contact via [LinkedIn](https://linkedin.com/in/gustavozsh) or [GitHub](https://github.com/zshgustavo).
+Open-source dependencies remain under their own licenses. For commercial licensing or derivative collaborations, contact via [LinkedIn](https://linkedin.com/in/gustavribeiro) or [GitHub](https://github.com/zshgustavo).
 
 THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.

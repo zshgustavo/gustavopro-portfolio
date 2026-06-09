@@ -1,4 +1,4 @@
-import { Github, Linkedin, Globe, Instagram, Music } from 'lucide-react'
+import { Github, Linkedin, Globe, Music } from 'lucide-react'
 
 /**
  * Social Icons Component
@@ -36,13 +36,12 @@ const LastFmIcon = ({ size = 24 }) => (
 function SocialIcons({ variant = 'light' }) {
   // Social links configuration - Edit these URLs
   const socialLinks = {
-    linkedin: 'https://linkedin.com/in/gustavozsh',
+    linkedin: 'https://www.linkedin.com/in/gustavribeiro',
     github: 'https://github.com/zshgustavo',
-    website: 'https://gustavosantos.dev',
-    gravatar: 'https://gravatar.com/gustavozsh',
+    website: 'https://gustavosantospro.com',
+    gravatar: 'https://gustavosantos.bio/',
     gdg: 'https://gdg.community.dev/gdg-cloud-brasilia/',
-    instagram: 'https://instagram.com/gustavozsh',
-    lastfm: 'https://last.fm/user/gustavozsh'
+    lastfm: 'https://www.last.fm/pt/user/gustavo_ribeiro'
   }
 
   // Icon configuration in the specified order
@@ -71,21 +70,15 @@ function SocialIcons({ variant = 'light' }) {
       url: socialLinks.gravatar,
       label: 'Gravatar'
     },
-    { 
-      id: 'gdg', 
-      Icon: GDGIcon, 
+    {
+      id: 'gdg',
+      Icon: GDGIcon,
       url: socialLinks.gdg,
       label: 'GDG Cloud Brasília'
     },
-    { 
-      id: 'instagram', 
-      Icon: Instagram, 
-      url: socialLinks.instagram,
-      label: 'Instagram'
-    },
-    { 
-      id: 'lastfm', 
-      Icon: LastFmIcon, 
+    {
+      id: 'lastfm',
+      Icon: LastFmIcon,
       url: socialLinks.lastfm,
       label: 'Last.fm'
     }

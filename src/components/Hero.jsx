@@ -32,14 +32,17 @@ function Hero() {
       <div className="hero-left">
         {/* Logo in top-left corner */}
         <div className="hero-logo">
-          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Stylized monogram logo similar to template */}
-            <path 
-              d="M15 45V15h8l12 18V15h8v30h-8L23 27v18h-8z" 
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <text
+              x="4"
+              y="42"
+              fontSize="32"
+              fontWeight="800"
+              fontFamily="Poppins"
               fill="#000"
-              stroke="#000"
-              strokeWidth="2"
-            />
+            >
+              GS
+            </text>
           </svg>
         </div>
 
@@ -52,7 +55,7 @@ function Hero() {
 
         {/* Social Icons - Left side bottom */}
         <div className="hero-socials" style={{ position: 'absolute', bottom: '2rem', left: '4rem' }}>
-          <SocialIcons variant="light" />
+          <SocialIcons variant="dark" />
         </div>
       </div>
 

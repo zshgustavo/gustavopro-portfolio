@@ -10,6 +10,7 @@ import Events from './components/Events'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import SocialIcons from './components/SocialIcons'
+import BackToTop from './components/BackToTop'
 
 function App() {
   const { t, i18n } = useTranslation()
@@ -55,6 +56,9 @@ function App() {
       
       {/* Footer with social icons */}
       <Footer />
+
+      {/* Floating back-to-top button, top-left, shown after scroll */}
+      <BackToTop />
     </div>
   )
 }
