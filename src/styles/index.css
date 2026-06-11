@@ -1050,6 +1050,21 @@ p {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+/* LinkedIn badge column */
+.contact-linkedin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  min-height: 360px;
+}
+
+.contact-linkedin .badge-base.LI-profile-badge {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 .form-group {
   margin-bottom: var(--spacing-md);
 }
