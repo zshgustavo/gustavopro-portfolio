@@ -41,8 +41,8 @@ const API_KEY = process.env.GEMINI_API_KEY
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite'
 
 if (!API_KEY && !DRY_RUN) {
-  console.error('✗ Missing GEMINI_API_KEY. Add it to .env at the project root.')
-  process.exit(1)
+  console.warn('⚠️ Missing GEMINI_API_KEY. Skipping auto-translation. Add it to .env at the project root if needed.')
+  process.exit(0)
 }
 
 // ── frontmatter keys eligible for translation ──────────────────────────────

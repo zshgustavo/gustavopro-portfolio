@@ -38,8 +38,8 @@ function Navbar({ currentLang, onChangeLang }) {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       {/* Logo - visible only after scroll or on mobile */}
-      <div className="navbar-logo" style={{ opacity: isScrolled ? 1 : 0 }}>
-        <svg viewBox="0 0 50 50" fill="currentColor" style={{ color: '#fff' }}>
+      <div className={`navbar-logo ${isScrolled ? 'visible' : ''}`}>
+        <svg viewBox="0 0 50 50" fill="currentColor" className="logo-svg">
           <text x="10" y="35" fontSize="30" fontWeight="bold" fontFamily="Poppins">P</text>
         </svg>
       </div>
@@ -79,7 +79,7 @@ function Navbar({ currentLang, onChangeLang }) {
 
         {/* Language Switcher */}
         <div className="language-switcher">
-          <Globe size={16} style={{ color: 'rgba(255,255,255,0.6)' }} />
+          <Globe size={16} className="lang-icon" />
           <button 
             className={`lang-btn ${currentLang === 'pt' ? 'active' : ''}`}
             onClick={() => onChangeLang('pt')}

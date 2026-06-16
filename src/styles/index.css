@@ -182,7 +182,7 @@ p {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
 
-.navbar-logo {
+.navbar-logo { opacity: 0; transition: opacity 0.3s; 
   width: 50px;
   height: 50px;
 }
@@ -1205,3 +1205,32 @@ p {
     padding: var(--spacing-md);
   }
 }
+.loading-container { padding: 4rem; }
+.project-tags { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.project-tag { font-size: 0.7rem; padding: 2px 8px; background: rgba(4, 17, 69, 0.3); border-radius: 20px; color: rgba(255,255,255,0.7); }
+.gallery-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; }
+.gallery-nav-prev { left: 1rem; }
+.gallery-nav-next { right: 1rem; }
+.gallery-counter { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.9rem; background: rgba(0,0,0,0.5); padding: 0.5rem 1rem; border-radius: 20px; }
+.event-date { display: flex; gap: 1rem; align-items: center; }
+.event-date-item { display: flex; align-items: center; gap: 4px; }
+.gallery-thumb.has-more { position: relative; }
+.gallery-more-indicator { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; font-weight: 600; }
+.view-photos-btn { margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #041145; background: rgba(4, 17, 69, 0.1); border: none; border-radius: 20px; cursor: pointer; transition: 0.3s ease; }
+
+
+.contact-success { text-align: center; padding: 3rem 2rem; }
+.success-icon { margin-bottom: 1rem; }
+.success-title { margin-bottom: 1rem; color: #041145; }
+.success-text { margin-bottom: 1.5rem; color: #666; }
+.reset-btn { width: auto; padding: 0.75rem 2rem; }
+.contact-error { color: #e53e3e; margin-bottom: 1rem; font-size: 0.9rem; }
+.submit-btn-flex { display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.submit-btn-flex.submitting { opacity: 0.7; }
+.loading-spinner.small-spinner { width: 20px; height: 20px; border-width: 2px; }
+
+
+.navbar-logo.visible { opacity: 1; }
+.logo-svg { color: #fff; }
+.lang-icon { color: rgba(255,255,255,0.6); }
+

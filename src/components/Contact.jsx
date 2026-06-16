@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useContent } from '../hooks/useContent'
 import SocialIcons from './SocialIcons'
 import { Send, CheckCircle } from 'lucide-react'
+import { defaultContactContent } from '../data/siteContent'
 
 /**
  * Contact Section Component
@@ -36,10 +37,8 @@ function Contact() {
 
   // Load contact content based on language
   const lang = i18n.language
-  const { content: contactContent } = useContent('contact', `main-${lang}`)
-  const { content: fallbackContent } = useContent('contact', 'main-pt')
-  
-  const content = contactContent || fallbackContent
+  const { content } = useContent('contact', `main-${lang}`, 'main-pt')
+  const displayContent = content || defaultContactContent
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -56,7 +55,7 @@ function Contact() {
 
     try {
       // If a form endpoint is configured, submit to it
-      const endpoint = content?.formEndpoint || 'https://formspree.io/f/YOUR_FORM_ID'
+      const endpoint = displayContent.formEndpoint || 'https://formspree.io/f/YOUR_FORM_ID'
       
       // For demo purposes, just simulate a successful submission
       // Replace with actual form submission logic
@@ -103,13 +102,13 @@ function Contact() {
         <div className="contact-container">
           {/* Left Side - Text and Social Links */}
           <div className="contact-left">
-            <h2>{content?.title || t('contact.title')}</h2>
-            <p className="contact-subtitle">{t('contact.explore')}</p>
+            <h2>{displayContent.title || t('contact.title')}</h2>
+            <p className="contact-subtitle">{displayContent.subtitle || t('contact.explore')}</p>
             
             <div className="about-separator"></div>
             
             <p className="contact-text">
-              {content?.body || t('contact.subtitle')}
+              {displayContent.body || t('contact.subtitle')}
             </p>
 
             {/* Social Links */}
@@ -122,29 +121,23 @@ function Contact() {
           <div className="contact-form">
             {isSubmitted ? (
               // Success Message
-              <div 
-                style={{
-                  textAlign: 'center',
-                  padding: '3rem 2rem'
-                }}
-              >
+              <div className="contact-success">
                 <CheckCircle 
                   size={60} 
                   color="#041145" 
-                  style={{ marginBottom: '1rem' }}
+                  className="success-icon"
                 />
-                <h3 style={{ marginBottom: '1rem', color: '#041145' }}>
+                <h3 className="success-title">
                   {i18n.language === 'pt' ? 'Mensagem Enviada!' : 'Message Sent!'}
                 </h3>
-                <p style={{ marginBottom: '1.5rem', color: '#666' }}>
+                <p className="success-text">
                   {i18n.language === 'pt' 
                     ? 'Obrigado pelo contato. Responderei em breve!' 
                     : 'Thank you for reaching out. I\'ll respond soon!'}
                 </p>
                 <button 
                   onClick={resetForm}
-                  className="submit-btn"
-                  style={{ width: 'auto', padding: '0.75rem 2rem' }}
+                  className="submit-btn reset-btn"
                 >
                   {i18n.language === 'pt' ? 'Enviar outra mensagem' : 'Send another message'}
                 </button>
@@ -192,11 +185,7 @@ function Contact() {
 
                 {/* Error Message */}
                 {error && (
-                  <p style={{ 
-                    color: '#e53e3e', 
-                    marginBottom: '1rem',
-                    fontSize: '0.9rem'
-                  }}>
+                  <p className="contact-error">
                     {error}
                   </p>
                 )}
@@ -204,26 +193,12 @@ function Contact() {
                 {/* Submit Button */}
                 <button 
                   type="submit" 
-                  className="submit-btn"
+                  className={`submit-btn submit-btn-flex ${isSubmitting ? 'submitting' : ''}`}
                   disabled={isSubmitting}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    opacity: isSubmitting ? 0.7 : 1
-                  }}
                 >
                   {isSubmitting ? (
                     <>
-                      <div 
-                        className="loading-spinner" 
-                        style={{ 
-                          width: '20px', 
-                          height: '20px',
-                          borderWidth: '2px' 
-                        }}
-                      />
+                      <div className="loading-spinner small-spinner" />
                       {i18n.language === 'pt' ? 'Enviando...' : 'Sending...'}
                     </>
                   ) : (

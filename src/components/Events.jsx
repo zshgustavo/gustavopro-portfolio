@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContentList } from '../hooks/useContent'
 import { Calendar, MapPin, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { defaultEvents } from '../data/siteContent'
 
 /**
  * Events Section Component
@@ -32,40 +33,6 @@ function Events() {
   
   // Load events list (per current language)
   const { items: events, isLoading } = useContentList('events', i18n.language)
-
-  // Default sample events for initial setup
-  const defaultEvents = [
-    {
-      id: 1,
-      title: 'Evento de Exemplo 1',
-      description: 'Descrição do primeiro evento. Edite em /posts/events/',
-      date: '2024-06-15',
-      location: 'São Paulo, SP',
-      type: 'coordinated',
-      thumbnail: '/images/events/event1.jpg',
-      photos: ['/images/events/event1-1.jpg', '/images/events/event1-2.jpg']
-    },
-    {
-      id: 2,
-      title: 'Palestra Tech Conference',
-      description: 'Uma palestra sobre desenvolvimento web moderno.',
-      date: '2024-03-20',
-      location: 'Rio de Janeiro, RJ',
-      type: 'speaker',
-      thumbnail: '/images/events/event2.jpg',
-      photos: ['/images/events/event2-1.jpg']
-    },
-    {
-      id: 3,
-      title: 'Workshop de React',
-      description: 'Workshop prático de React para iniciantes.',
-      date: '2024-01-10',
-      location: 'Online',
-      type: 'speaker',
-      thumbnail: '/images/events/event3.jpg',
-      photos: []
-    }
-  ]
 
   const displayEvents = events.length > 0 ? events : defaultEvents
 
@@ -119,7 +86,7 @@ function Events() {
 
         {/* Events Grid */}
         {isLoading ? (
-          <div className="flex-center" style={{ padding: '4rem' }}>
+          <div className="flex-center loading-container">
             <div className="loading-spinner"></div>
           </div>
         ) : (
@@ -156,43 +123,13 @@ function Events() {
               <>
                 <button 
                   onClick={prevPhoto}
-                  style={{
-                    position: 'absolute',
-                    left: '1rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'rgba(255,255,255,0.1)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: '50px',
-                    height: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    color: '#fff'
-                  }}
+                  className="gallery-nav-btn gallery-nav-prev"
                 >
                   <ChevronLeft size={24} />
                 </button>
                 <button 
                   onClick={nextPhoto}
-                  style={{
-                    position: 'absolute',
-                    right: '1rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'rgba(255,255,255,0.1)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: '50px',
-                    height: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    color: '#fff'
-                  }}
+                  className="gallery-nav-btn gallery-nav-next"
                 >
                   <ChevronRight size={24} />
                 </button>
@@ -208,17 +145,7 @@ function Events() {
             />
 
             {/* Photo counter */}
-            <div style={{
-              position: 'absolute',
-              bottom: '1rem',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              color: '#fff',
-              fontSize: '0.9rem',
-              background: 'rgba(0,0,0,0.5)',
-              padding: '0.5rem 1rem',
-              borderRadius: '20px'
-            }}>
+            <div className="gallery-counter">
               {currentPhotoIndex + 1} / {selectedEvent.photos.length}
             </div>
           </div>
@@ -256,13 +183,13 @@ function EventCard({ event, t, formatDate, onViewPhotos }) {
       {/* Event Info */}
       <div className="event-info">
         {/* Date and Location */}
-        <div className="event-date" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div className="event-date">
+          <span className="event-date-item">
             <Calendar size={14} />
             {formatDate(date)}
           </span>
           {location && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span className="event-date-item">
               <MapPin size={14} />
               {location}
             </span>
@@ -278,11 +205,8 @@ function EventCard({ event, t, formatDate, onViewPhotos }) {
             {photos.slice(0, 4).map((photo, index) => (
               <div 
                 key={index}
-                className="gallery-thumb"
+                className={`gallery-thumb ${index === 3 && photos.length > 4 ? 'has-more' : ''}`}
                 onClick={onViewPhotos}
-                style={index === 3 && photos.length > 4 ? {
-                  position: 'relative'
-                } : {}}
               >
                 <img 
                   src={photo}
@@ -293,17 +217,7 @@ function EventCard({ event, t, formatDate, onViewPhotos }) {
                 />
                 {/* Show +X more indicator on last thumbnail */}
                 {index === 3 && photos.length > 4 && (
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(0,0,0,0.7)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#fff',
-                    fontSize: '0.8rem',
-                    fontWeight: '600'
-                  }}>
+                  <div className="gallery-more-indicator">
                     +{photos.length - 4}
                   </div>
                 )}
@@ -316,20 +230,7 @@ function EventCard({ event, t, formatDate, onViewPhotos }) {
         {photos && photos.length > 0 && (
           <button 
             onClick={onViewPhotos}
-            style={{
-              marginTop: '1rem',
-              padding: '0.5rem 1rem',
-              fontSize: '0.8rem',
-              fontWeight: '600',
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              color: '#041145',
-              background: 'rgba(4, 17, 69, 0.1)',
-              border: 'none',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              transition: '0.3s ease'
-            }}
+            className="view-photos-btn"
           >
             {t('events.viewPhotos')} ({photos.length})
           </button>

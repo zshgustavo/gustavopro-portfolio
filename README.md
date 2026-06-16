@@ -1,58 +1,40 @@
 # 🚀 Gustavo Santos - Portfolio Pessoal
 
-Portfolio pessoal moderno e responsivo desenvolvido com React, TypeScript e design Neo-Brutalista. Apresenta projetos, experiências e informações profissionais de forma elegante e impactante.
+Portfolio pessoal moderno e responsivo desenvolvido com React, Vite e design Neo-Brutalista. Apresenta projetos, experiências e informações profissionais de forma elegante e impactante.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)
-![React](https://img.shields.io/badge/React-19.1-61dafb)
-![Vite](https://img.shields.io/badge/Vite-7.1-646cff)
+![React](https://img.shields.io/badge/React-19.2-61dafb)
+![Vite](https://img.shields.io/badge/Vite-7.2-646cff)
 
 ## ✨ Características
 
 - 🎨 **Design Neo-Brutalista** - Interface moderna com alto contraste e elementos geométricos
 - 📱 **Totalmente Responsivo** - Adaptado para todos os dispositivos
-- 🌓 **Dark/Light Mode** - Suporte a temas claro e escuro
 - ⚡ **Performance Otimizada** - Construído com Vite para carregamento rápido
-- 📝 **Content Driven** - Gerenciamento de conteúdo via arquivos Markdown
-- 🎭 **Animações Suaves** - Transições e animações com Framer Motion
-- 🔧 **TypeScript** - Código type-safe e manutenível
-- 🎯 **SEO Friendly** - Otimizado para mecanismos de busca
+- 📝 **Content Driven** - Gerenciamento de conteúdo via arquivos Markdown (`gray-matter`)
+- 🌐 **Internacionalização** - Suporte a múltiplos idiomas com `i18next` e geração automática de conteúdo
+- 🎭 **Animações Suaves** - Transições baseadas em CSS moderno
+- 🎯 **SEO Friendly** - Estrutura semântica
 
 ## 🛠️ Stack de Tecnologias
 
 ### Frontend
-- **React 19.1** - Biblioteca UI moderna
-- **TypeScript 5.9** - Tipagem estática
-- **Vite 7.1** - Build tool e dev server
-- **Tailwind CSS 4** - Framework CSS utilitário
-- **Framer Motion** - Biblioteca de animações
-- **Wouter** - Roteamento minimalista
-- **React Icons** - Ícones vetoriais
-- **Streamdown** - Renderização de Markdown
+- **React 19.2** - Biblioteca UI moderna
+- **Vite 7.2** - Build tool e dev server
+- **React Router** - Roteamento (para navegação flexível se necessário)
+- **i18next** - Tradução e internacionalização
+- **gray-matter** - Leitura e extração de metadados dos arquivos Markdown
+- **Lucide React** - Ícones modernos e vetoriais
 
-### Backend (opcional)
-- **Express** - Web framework Node.js
-- **tRPC** - API type-safe
-- **Drizzle ORM** - ORM TypeScript-first
-- **MySQL** - Banco de dados relacional
-
-### UI Components
-- **Radix UI** - Componentes acessíveis e unstyled
-- **shadcn/ui** - Componentes reutilizáveis
-- **Lucide React** - Ícones modernos
-
-### Ferramentas de Desenvolvimento
-- **pnpm** - Gerenciador de pacotes eficiente
-- **Prettier** - Formatação de código
-- **Vitest** - Framework de testes
-- **ESBuild** - Bundler JavaScript
+### Ferramentas e Scripts
+- **Node.js Script (scripts/translate.mjs)** - Script para auto-tradução de PT para EN via Gemini API
 
 ## 📋 Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:
 
-- **Node.js** (versão 18 ou superior)
-- **pnpm** (versão 10 ou superior)
+- **Node.js** (versão 22 ou superior recomendada)
+- **npm** (gerenciador de pacotes)
 
 ## 🚀 Como Executar
 
@@ -66,155 +48,82 @@ cd gustavopro-portfolio
 ### 2. Instale as dependências
 
 ```bash
-pnpm install
+npm install
 ```
 
-### 3. Execute em modo desenvolvimento
+### 3. Configuração da API do Gemini (Opcional)
+Crie um arquivo `.env` na raiz do projeto e configure a sua chave para traduções.
+
+```env
+GEMINI_API_KEY=sua-chave-aqui
+```
+
+### 4. Execute em modo desenvolvimento
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 O projeto estará disponível em `http://localhost:5173`
 
-### 4. Build para produção
+### 5. Build para produção
 
 ```bash
-pnpm build
+npm run build
 ```
 
-### 5. Execute a versão de produção
-
-```bash
-pnpm start
-```
+*(O script de build fará o prebuild que inclui a geração das traduções via Gemini se `GEMINI_API_KEY` estiver configurada).*
 
 ## 📁 Estrutura do Projeto
 
 ```
 gustavopro-portfolio/
-├── client/                 # Aplicação frontend
-│   ├── public/            # Arquivos públicos
-│   │   ├── images/        # Imagens e assets
-│   │   └── posts/         # Conteúdo em Markdown
-│   │       ├── about.md   # Sobre mim
-│   │       ├── project-*.md  # Projetos
-│   │       └── event-*.md    # Eventos
-│   └── src/               # Código fonte React
-│       ├── components/    # Componentes reutilizáveis
-│       ├── pages/         # Páginas da aplicação
-│       ├── hooks/         # Custom hooks
-│       ├── contexts/      # Context providers
-│       └── lib/           # Utilitários e helpers
-├── server/                # Backend (opcional)
-│   ├── _core/            # Configuração do servidor
-│   ├── db.ts             # Configuração do banco
-│   └── routers.ts        # Rotas tRPC
-├── shared/               # Código compartilhado
-│   └── types.ts          # Tipos TypeScript
-├── drizzle/              # Migrações do banco
-└── package.json          # Dependências e scripts
+├── public/                 # Arquivos públicos e assets estáticos
+│   ├── images/             # Imagens gerais, heróis e ícones
+│   └── posts/              # Conteúdo em Markdown
+│       ├── about/          # Textos da seção Sobre mim
+│       ├── contact/        # Configuração e textos da seção de Contato
+│       ├── events/         # Eventos, workshops e palestras
+│       └── projects/       # Projetos do portfólio (ex: project-1.md)
+├── scripts/                # Scripts de automatização
+│   └── translate.mjs       # Script de tradução automática Gemini
+├── src/                    # Código fonte React
+│   ├── components/         # Componentes reutilizáveis (Hero, About, Projects, etc)
+│   ├── data/               # Arquivos de dados padrão e configurações
+│   ├── hooks/              # Custom hooks (como useContent)
+│   ├── styles/             # Arquivos de estilização (index.css)
+│   ├── App.jsx             # Root component
+│   └── i18n.js             # Configuração do i18next
+└── package.json            # Dependências e scripts npm
 ```
-
-## 📜 Scripts Disponíveis
-
-| Script | Descrição |
-|--------|-----------|
-| `pnpm dev` | Inicia o servidor de desenvolvimento |
-| `pnpm build` | Cria build de produção |
-| `pnpm start` | Inicia servidor de produção |
-| `pnpm check` | Verifica tipos TypeScript |
-| `pnpm format` | Formata código com Prettier |
-| `pnpm test` | Executa testes com Vitest |
-| `pnpm db:push` | Aplica migrações do banco |
 
 ## 📝 Gerenciamento de Conteúdo
 
-O conteúdo do portfolio é gerenciado através de arquivos Markdown localizados em `client/public/posts/`.
+O conteúdo do portfolio é gerenciado através de arquivos Markdown localizados em `public/posts/`.
 
-### Estrutura de um Post
+### Estrutura de um Post (Exemplo: Projeto)
 
 ```markdown
 ---
 title: "Título do Projeto"
-section: "projects"
-order: 1
-date: "2024-01-01"
+description: "Breve descrição do projeto"
+thumbnail: "/images/projects/exemplo.png"
+codeUrl: "https://github.com/exemplo"
+siteUrl: "https://exemplo.com"
+featured: true
+tags: ["react", "javascript"]
 ---
 
-Conteúdo do projeto em Markdown...
+Conteúdo longo opcional sobre o projeto.
 ```
-
-### Seções Disponíveis
-
-- **about** - Informações sobre você
-- **projects** - Portfólio de projetos
-- **events** - Eventos e palestras
 
 ### 🌐 Tradução automática (PT → EN)
 
 A versão em inglês de cada arquivo Markdown é gerada por IA em tempo de build.
 Você escreve **apenas** o arquivo `*-pt.md`; o script `scripts/translate.mjs`
-chama o Google Gemini e cria/atualiza o `*-en.md` correspondente.
-
-```bash
-# 1. Crie sua chave em https://aistudio.google.com/app/apikey
-# 2. Copie .env.example → .env e preencha GEMINI_API_KEY
-cp .env.example .env
-
-# Tradução incremental (apenas arquivos PT mais novos que o EN)
-npm run translate
-
-# Forçar regeneração de todos os EN
-npm run translate:force
-```
-
-Convenções:
-
-- Fonte única: `*-pt.md` (events, projects, about, contact, hero).
-- O `prebuild` roda a tradução automaticamente antes de `vite build`.
-- Apenas `title`, `subtitle`, `description` e `role` do frontmatter são traduzidos. URLs, datas, ids, tags, paths e nomes próprios ficam inalterados.
-
-## ⚙️ Configuração de Ambiente
-
-Para funcionalidades adicionais (como upload de arquivos ou autenticação), crie um arquivo `.env` na raiz do projeto:
-
-```env
-# Banco de Dados (opcional)
-DATABASE_URL=mysql://user:password@localhost:3306/portfolio
-
-# AWS S3 (opcional - para upload de arquivos)
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret_key
-AWS_REGION=us-east-1
-AWS_BUCKET_NAME=your_bucket_name
-
-# Outras configurações
-NODE_ENV=development
-```
-
-## 🎨 Personalização
-
-### Cores e Tema
-
-As cores do tema podem ser customizadas em `client/src/index.css`. O projeto usa variáveis CSS para fácil personalização:
-
-```css
-:root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 0%;
-  --accent: 142 76% 36%;
-  /* ... outras variáveis */
-}
-```
-
-### Fontes
-
-As fontes são carregadas via Tailwind CSS. Customize em `client/src/index.css`.
+chama a API do Google Gemini e cria/atualiza o `*-en.md` correspondente.
 
 ## 🤝 Como Contribuir
-
-Contribuições são bem-vindas! Para contribuir:
 
 1. Faça um Fork do projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
@@ -239,14 +148,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - GitHub: [@zshgustavo](https://github.com/zshgustavo)
 - LinkedIn: [Gustavo Santos](https://linkedin.com/in/gustavozsh)
 - Portfolio: [gustavopro-portfolio](https://github.com/zshgustavo/gustavopro-portfolio)
-
-## 🙏 Agradecimentos
-
-- [Radix UI](https://www.radix-ui.com/) - Componentes primitivos acessíveis
-- [shadcn/ui](https://ui.shadcn.com/) - Componentes reutilizáveis
-- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS
-- [Vite](https://vitejs.dev/) - Build tool moderna
-- [React](https://react.dev/) - Biblioteca UI
 
 ---
 

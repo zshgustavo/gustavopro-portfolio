@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContentList } from '../hooks/useContent'
 import { ExternalLink, Github } from 'lucide-react'
+import { defaultProjects } from '../data/siteContent'
 
 /**
  * Projects Section Component
@@ -31,40 +32,6 @@ function Projects() {
   
   // Load projects list (per current language)
   const { items: projects, isLoading } = useContentList('projects', i18n.language)
-
-  // Default sample projects for initial setup
-  const defaultProjects = [
-    {
-      id: 1,
-      title: 'Projeto Exemplo 1',
-      description: 'Descrição do primeiro projeto. Edite em /posts/projects/',
-      thumbnail: '/images/projects/project1.png',
-      codeUrl: 'https://github.com',
-      siteUrl: 'https://example.com',
-      featured: true,
-      tags: ['react', 'javascript']
-    },
-    {
-      id: 2,
-      title: 'Projeto Exemplo 2',
-      description: 'Descrição do segundo projeto. Adicione seus projetos!',
-      thumbnail: '/images/projects/project2.png',
-      codeUrl: 'https://github.com',
-      siteUrl: '',
-      featured: false,
-      tags: ['nodejs', 'mongodb']
-    },
-    {
-      id: 3,
-      title: 'Projeto Exemplo 3',
-      description: 'Mais um projeto de exemplo para demonstração.',
-      thumbnail: '/images/projects/project3.png',
-      codeUrl: 'https://github.com',
-      siteUrl: 'https://example.com',
-      featured: true,
-      tags: ['typescript', 'react']
-    }
-  ]
 
   const displayProjects = projects.length > 0 ? projects : defaultProjects
 
@@ -100,7 +67,7 @@ function Projects() {
 
         {/* Projects Grid */}
         {isLoading ? (
-          <div className="flex-center" style={{ padding: '4rem' }}>
+          <div className="flex-center loading-container">
             <div className="loading-spinner"></div>
           </div>
         ) : (
@@ -148,23 +115,9 @@ function ProjectCard({ project, t }) {
 
         {/* Tags */}
         {tags && tags.length > 0 && (
-          <div style={{ 
-            display: 'flex', 
-            gap: '0.5rem', 
-            marginBottom: '1rem',
-            flexWrap: 'wrap'
-          }}>
+          <div className="project-tags">
             {tags.map((tag, i) => (
-              <span 
-                key={i}
-                style={{
-                  fontSize: '0.7rem',
-                  padding: '2px 8px',
-                  background: 'rgba(4, 17, 69, 0.3)',
-                  borderRadius: '20px',
-                  color: 'rgba(255,255,255,0.7)'
-                }}
-              >
+              <span key={i} className="project-tag">
                 {tag}
               </span>
             ))}
