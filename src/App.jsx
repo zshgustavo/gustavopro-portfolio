@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Components
@@ -9,10 +9,9 @@ import Projects from './components/Projects'
 import Events from './components/Events'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import SocialIcons from './components/SocialIcons'
 
 function App() {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const [isLoading, setIsLoading] = useState(true)
 
   // Simulate initial loading for smooth animations

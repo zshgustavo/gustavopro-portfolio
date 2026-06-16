@@ -1,4 +1,5 @@
 import { Github, Linkedin, Globe, Instagram, Music } from 'lucide-react'
+import { socialLinks } from '../data/siteContent'
 
 /**
  * Social Icons Component
@@ -34,18 +35,6 @@ const LastFmIcon = ({ size = 24 }) => (
 )
 
 function SocialIcons({ variant = 'light' }) {
-  // Social links configuration - Edit these URLs
-  const socialLinks = {
-    linkedin: 'https://linkedin.com/in/gustavozsh',
-    github: 'https://github.com/zshgustavo',
-    website: 'https://gustavosantos.dev',
-    gravatar: 'https://gravatar.com/gustavozsh',
-    gdg: 'https://gdg.community.dev/gdg-cloud-brasilia/',
-    instagram: 'https://instagram.com/gustavozsh',
-    lastfm: 'https://last.fm/user/gustavozsh'
-  }
-
-  // Icon configuration in the specified order
   const socialIcons = [
     { 
       id: 'linkedin', 

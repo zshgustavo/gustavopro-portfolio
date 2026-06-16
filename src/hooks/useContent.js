@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import matter from 'gray-matter'
 
 /**
  * useContent Hook
@@ -21,7 +22,7 @@ import { useState, useEffect } from 'react'
  * @param {string} filename - The markdown file name without extension
  * @returns {Object} { content, isLoading, error }
  */
-export function useContent(section, filename) {
+export function useContent(section, filename, fallbackFilename) {
   const [content, setContent] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -32,23 +33,20 @@ export function useContent(section, filename) {
         setIsLoading(true)
         setError(null)
 
-        // Try to fetch the markdown file
-        const response = await fetch(`/posts/${section}/${filename}.md`)
-        
-        if (!response.ok) {
-          // File doesn't exist yet, return null (this is fine for initial setup)
-          setContent(null)
-          setIsLoading(false)
+        const parsed = await fetchMarkdown(section, filename)
+
+        if (parsed) {
+          setContent(parsed)
           return
         }
 
-        const text = await response.text()
-        
-        // Parse the markdown frontmatter and body
-        const parsed = parseMarkdown(text)
-        setContent(parsed)
+        if (fallbackFilename && fallbackFilename !== filename) {
+          setContent(await fetchMarkdown(section, fallbackFilename))
+          return
+        }
+
+        setContent(null)
       } catch (err) {
-        console.log(`Content file not found: ${section}/${filename}.md`)
         setError(err)
         setContent(null)
       } finally {
@@ -101,22 +99,14 @@ export function useContentList(section, lang = 'pt') {
 
         const loadedItems = await Promise.all(
           index.files.map(async (entry) => {
-            // Strip .md if the index still uses the legacy format
             const base = entry.replace(/\.md$/, '').replace(/-(pt|en)$/, '')
-            const candidates = [
-              `${base}-${lang}.md`,
-              `${base}-pt.md`,
-              `${base}.md`,
-            ]
+            const candidates = [...new Set([`${base}-${lang}.md`, `${base}-pt.md`, `${base}.md`])]
             for (const filename of candidates) {
               try {
-                const response = await fetch(`/posts/${section}/${filename}`)
-                if (response.ok) {
-                  const text = await response.text()
-                  return parseMarkdown(text)
-                }
+                const parsed = await fetchMarkdown(section, filename.replace(/\.md$/, ''))
+                if (parsed) return parsed
               } catch {
-                // try the next candidate
+                continue
               }
             }
             return null
@@ -125,7 +115,6 @@ export function useContentList(section, lang = 'pt') {
 
         setItems(loadedItems.filter(Boolean))
       } catch (err) {
-        console.log(`Index file not found for section: ${section}`)
         setError(err)
         setItems([])
       } finally {
@@ -156,72 +145,24 @@ export function useContentList(section, lang = 'pt') {
  * @param {string} text - The raw markdown text
  * @returns {Object} Parsed object with frontmatter fields and body
  */
+async function fetchMarkdown(section, filename) {
+  const response = await fetch(`/posts/${section}/${filename}.md`)
+
+  if (!response.ok) {
+    return null
+  }
+
+  const text = await response.text()
+  return parseMarkdown(text)
+}
+
 function parseMarkdown(text) {
-  const frontmatterRegex = /^---\n([\s\S]*?)\n---/
-  const match = text.match(frontmatterRegex)
+  const { data, content } = matter(text)
 
-  if (!match) {
-    // No frontmatter, return the whole text as body
-    return { body: text.trim() }
+  return {
+    ...data,
+    body: content.trim(),
   }
-
-  const frontmatterText = match[1]
-  const body = text.slice(match[0].length).trim()
-
-  // Parse YAML-like frontmatter (simple key: value pairs)
-  const frontmatter = {}
-  const lines = frontmatterText.split('\n')
-  
-  let currentKey = null
-  let isMultiline = false
-  let multilineValue = []
-
-  for (const line of lines) {
-    // Skip empty lines
-    if (!line.trim()) continue
-
-    // Check for new key-value pair
-    const keyValueMatch = line.match(/^(\w+):\s*(.*)$/)
-    
-    if (keyValueMatch) {
-      // Save previous multiline value if any
-      if (currentKey && isMultiline) {
-        frontmatter[currentKey] = multilineValue.join('\n').trim()
-      }
-
-      const [, key, value] = keyValueMatch
-      currentKey = key
-
-      // Check if value starts with | or > (YAML multiline indicator)
-      if (value === '|' || value === '>') {
-        isMultiline = true
-        multilineValue = []
-      } else if (value.startsWith('[') && value.endsWith(']')) {
-        // Parse array syntax: [item1, item2, item3]
-        try {
-          frontmatter[key] = JSON.parse(value)
-        } catch {
-          frontmatter[key] = value.slice(1, -1).split(',').map(s => s.trim())
-        }
-        currentKey = null
-        isMultiline = false
-      } else {
-        frontmatter[key] = value.trim()
-        currentKey = null
-        isMultiline = false
-      }
-    } else if (isMultiline && currentKey) {
-      // Continue collecting multiline value
-      multilineValue.push(line)
-    }
-  }
-
-  // Handle final multiline value
-  if (currentKey && isMultiline) {
-    frontmatter[currentKey] = multilineValue.join('\n').trim()
-  }
-
-  return { ...frontmatter, body }
 }
 
 export default useContent

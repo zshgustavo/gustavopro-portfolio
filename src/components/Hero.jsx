@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { defaultHeroContent } from '../data/siteContent'
 import SocialIcons from './SocialIcons'
 import { useContent } from '../hooks/useContent'
 
@@ -16,14 +17,10 @@ import { useContent } from '../hooks/useContent'
 function Hero() {
   const { t, i18n } = useTranslation()
 
-  // Load hero content from markdown (per language, with PT fallback)
   const lang = i18n.language
-  const { content: heroLang } = useContent('about', `hero-${lang}`)
-  const { content: heroPt } = useContent('about', 'hero-pt')
-  const heroContent = heroLang || heroPt
+  const { content: heroContent } = useContent('about', `hero-${lang}`, 'hero-pt')
 
-  // Default values if no content file exists yet
-  const name = heroContent?.name || 'Seu Nome'
+  const name = heroContent?.name || defaultHeroContent.name
   const role = heroContent?.role || t('hero.role')
 
   return (
@@ -51,7 +48,7 @@ function Hero() {
         </div>
 
         {/* Social Icons - Left side bottom */}
-        <div className="hero-socials" style={{ position: 'absolute', bottom: '2rem', left: '4rem' }}>
+        <div className="hero-socials">
           <SocialIcons variant="light" />
         </div>
       </div>

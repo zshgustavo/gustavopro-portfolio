@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
+import { defaultAboutContent } from '../data/siteContent'
 import { useContent } from '../hooks/useContent'
 import { ArrowRight } from 'lucide-react'
 
@@ -17,29 +18,10 @@ import { ArrowRight } from 'lucide-react'
  */
 function About() {
   const { t, i18n } = useTranslation()
-  
-  // Load about content based on current language
+
   const lang = i18n.language
-  const { content: aboutContent, isLoading } = useContent('about', `main-${lang}`)
-  
-  // Fallback to default language if translation doesn't exist
-  const { content: fallbackContent } = useContent('about', 'main-pt')
-  
-  const content = aboutContent || fallbackContent
-
-  // Default content if no markdown file exists yet
-  const defaultAbout = {
-    title: t('about.title'),
-    subtitle: t('about.trajectory'),
-    body: `Aqui você pode escrever sobre sua trajetória profissional, experiências e objetivos. 
-    
-Para editar este conteúdo, crie ou modifique o arquivo \`/posts/about/main-pt.md\` ou \`/posts/about/main-en.md\` para a versão em inglês.
-
-Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`,
-    image: '/images/about.jpg'
-  }
-
-  const displayContent = content || defaultAbout
+  const { content, isLoading } = useContent('about', `main-${lang}`, 'main-pt')
+  const displayContent = content || defaultAboutContent
 
   return (
     <section className="about-section section section-light" id="about">
@@ -49,7 +31,7 @@ Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`
           <div className="about-left">
             <div className="about-image-wrapper">
               <img 
-                src="/images/about.png"
+                src={displayContent.image || '/images/about.png'}
                 alt={t('about.title')}
                 className="about-photo"
                 onError={(e) => {
@@ -65,7 +47,7 @@ Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`
           {/* Right Side - Content */}
           <div className="about-right">
             <h2>{displayContent.title || t('about.title')}</h2>
-            <p className="about-subtitle">{t('about.explore')}</p>
+            <p className="about-subtitle">{displayContent.subtitle || t('about.trajectory')}</p>
             
             <div className="about-separator"></div>
             

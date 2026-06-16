@@ -14,7 +14,7 @@ import SocialIcons from './SocialIcons'
  * The footer uses a dark theme to match the template design.
  */
 function Footer() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   // Scroll to top of page
   const scrollToTop = () => {
