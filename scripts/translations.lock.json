@@ -6,6 +6,11 @@
       "model": "seed",
       "translatedAt": "2026-08-17T00:00:00.000Z"
     },
+    "public/posts/certifications/main-pt.md": {
+      "sourceSha256": "aabd06b976fd2d395a42af172c82a7fb6b86a83914dc8be4aa2a8a94566f590c",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
+    },
     "public/posts/contact/main-pt.md": {
       "sourceSha256": "fa565d1ef6926f568cd0d28645ef5399aa650ebb03796cd4ad7637274172176d",
       "model": "manual",

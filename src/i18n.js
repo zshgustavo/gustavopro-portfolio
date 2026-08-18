@@ -41,6 +41,7 @@ const resources = {
         viewCode: 'ver código',
         viewSite: 'ver site'
       },
+      // Fallback only — a lista vive em /posts/certifications/main-<lang>.md.
       certs: {
         title: 'certificações',
         subtitle: 'Especialista multi-cloud certificado'
@@ -93,6 +94,7 @@ const resources = {
         viewCode: 'view code',
         viewSite: 'view site'
       },
+      // Fallback only — the list lives in /posts/certifications/main-<lang>.md.
       certs: {
         title: 'certifications',
         subtitle: 'Certified multi-cloud specialist'

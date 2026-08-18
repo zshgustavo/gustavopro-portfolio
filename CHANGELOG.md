@@ -10,6 +10,22 @@ Mudanças aqui ficam pendentes até o próximo commit.
 
 ---
 
+## [2026-08-18] — Certificações vira seção de conteúdo
+
+Última seção que ainda vivia em código. Com ela, **todas as 7 seções do site** são editáveis por markdown em `public/posts/`.
+
+### Adicionado
+- **`public/posts/certifications/`** — `title`, `subtitle` e uma lista `certs` de `{ code, name, img? }`, saindo do array hardcoded em `src/components/Certifications.jsx`.
+- O campo **`img`** passa a ser conteúdo: colar a URL do badge oficial (Credly / Google Cloud) no markdown já exibe a imagem, sem tocar em `.jsx`. Sem URL, a célula mostra `[code]` em mono — placeholder proposital.
+
+### Alterado
+- `Certifications.jsx` lê de `/posts/certifications/main-<lang>.md`; `certs.title` e `certs.subtitle` no i18n viram apenas fallback.
+
+### Nota
+- Nenhuma mudança no `scripts/translate.mjs` foi necessária: os nomes dos provedores são nomes próprios e idênticos nos dois idiomas, então só `title` e `subtitle` entram no payload de tradução — ambos já cobertos por `TRANSLATABLE_KEYS`.
+
+---
+
 ## [2026-08-18] — Stack vira seção de conteúdo
 
 ### Adicionado
