@@ -23,13 +23,10 @@ const resources = {
         events: 'eventos',
         contact: 'contato'
       },
+      // Fallback only — name, role, description, stats and photo live in
+      // /posts/hero/main-<lang>.md.
       hero: {
-        role: 'Engenheiro de Dados & Cloud Sênior',
-        stats: [
-          { value: '10+', label: 'anos' },
-          { value: '5', label: 'clouds' },
-          { value: 'GDG', label: 'organizer' }
-        ]
+        role: 'Engenheiro de Dados & Cloud Sênior'
       },
       about: {
         title: 'sobre mim'
@@ -83,13 +80,10 @@ const resources = {
         events: 'events',
         contact: 'contact'
       },
+      // Fallback only — name, role, description, stats and photo live in
+      // /posts/hero/main-<lang>.md.
       hero: {
-        role: 'Senior Data & Cloud Engineer',
-        stats: [
-          { value: '10+', label: 'years' },
-          { value: '5', label: 'clouds' },
-          { value: 'GDG', label: 'organizer' }
-        ]
+        role: 'Senior Data & Cloud Engineer'
       },
       about: {
         title: 'about me'

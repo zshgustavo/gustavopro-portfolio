@@ -3,22 +3,25 @@ import SocialIcons from './SocialIcons'
 import { useContent } from '../hooks/useContent'
 
 /**
- * Hero — Terminal direction: `// role` eyebrow in mono, stacked 80px name,
+ * Hero — Terminal direction: `// role` eyebrow in mono, stacked name at 80px,
  * short description, mono stats row, and the portrait with a 1px accent frame
  * offset -12px. Social tiles close the section.
  *
- * `name`, `role` and `description` come from /posts/about/hero-<lang>.md;
- * the stats row comes from i18n (`hero.stats`).
+ * Everything in this section is content, editable without touching code:
+ * /posts/hero/main-<lang>.md carries the name, role, description, stats and
+ * the photo path — and the photo file itself lives next to them in
+ * /posts/hero/. See GUIA_CONTEUDO.md.
  */
 function Hero() {
   const { t, i18n } = useTranslation()
 
-  const { content } = useContent('about', 'hero', i18n.language)
+  const { content } = useContent('hero', 'main', i18n.language)
 
-  const name = content?.name || 'Gustavo Santos'
+  const name = content?.name || ''
   const role = content?.role || t('hero.role')
   const description = content?.description
-  const stats = t('hero.stats', { returnObjects: true })
+  const photo = content?.photo
+  const stats = Array.isArray(content?.stats) ? content.stats : []
 
   return (
     <header className="hero sec--dark" id="hero">
@@ -26,16 +29,19 @@ function Hero() {
         <div className="hero-grid">
           <div>
             <p className="hero-eyebrow">{'// '}{role}</p>
+
             <h1 className="hero-name">
-              {name.split(' ').map((word) => (
+              {name.split(' ').filter(Boolean).map((word) => (
                 <span key={word}>
                   {word}
                   <br />
                 </span>
               ))}
             </h1>
+
             {description && <p className="hero-desc">{description}</p>}
-            {Array.isArray(stats) && stats.length > 0 && (
+
+            {stats.length > 0 && (
               <div className="hero-stats">
                 {stats.map(({ value, label }) => (
                   <div key={label}>
@@ -48,15 +54,17 @@ function Hero() {
             )}
           </div>
 
-          <div className="hero-photo">
-            <img
-              src="/images/profile.jpg"
-              alt={name}
-              onError={(e) => {
-                e.target.style.display = 'none'
-              }}
-            />
-          </div>
+          {photo && (
+            <div className="hero-photo">
+              <img
+                src={photo}
+                alt={name}
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                }}
+              />
+            </div>
+          )}
         </div>
 
         <div className="hero-socials">

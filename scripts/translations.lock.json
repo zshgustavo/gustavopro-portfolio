@@ -1,11 +1,6 @@
 {
   "version": 1,
   "entries": {
-    "public/posts/about/hero-pt.md": {
-      "sourceSha256": "c11b3c30ab9e98b889764d2649104206899a00f5e0b3c5b2b1a71fb32bb6cdff",
-      "model": "manual",
-      "translatedAt": "2026-08-18T00:00:00.000Z"
-    },
     "public/posts/about/main-pt.md": {
       "sourceSha256": "b231550aeae1488555a9df19e9fedc1a5980bd79431a57f32d64bacd42f45553",
       "model": "seed",
@@ -45,6 +40,11 @@
       "sourceSha256": "e5334050e1e00380baab65905e704a9ec16d14170bbdab6fc9cc9b8509b981b7",
       "model": "seed",
       "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/hero/main-pt.md": {
+      "sourceSha256": "d48c733491e47450e6191fd4cd2b1cec20b0d3f8dc9327c0df12b91395c219c5",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     },
     "public/posts/projects/project-1-pt.md": {
       "sourceSha256": "ffb8b0e94b58886c9de1e033b88fd4c8e0cc2375ca3896ecc706446ce9422034",

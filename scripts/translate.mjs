@@ -62,6 +62,17 @@ const REQUEST_TIMEOUT_MS = 60_000
 const TRANSLATABLE_KEYS = ['title', 'subtitle', 'description', 'role']
 
 /**
+ * Prose that lives inside array-of-object frontmatter values, as
+ * `{ <key>: [<field>, …] }`. Flattened into the payload as
+ * `frontmatter.<key>.<index>.<field>`.
+ *
+ * Without this, a field like `stats[].label` would be copied verbatim from the
+ * Portuguese source into the English file — silently regressing a translation
+ * that was already correct.
+ */
+const TRANSLATABLE_LIST_FIELDS = { stats: ['label'] }
+
+/**
  * gray-matter is pointed at the same js-yaml schema the browser uses
  * (src/lib/frontmatter.js), so anything written here is guaranteed to parse
  * identically at runtime. This is what replaced the old hand-rolled serializer.
@@ -163,6 +174,18 @@ async function main() {
           payload[`frontmatter.${key}`] = value
         }
       }
+      for (const [key, fields] of Object.entries(TRANSLATABLE_LIST_FIELDS)) {
+        if (!Array.isArray(data[key])) continue
+        data[key].forEach((item, index) => {
+          if (!item || typeof item !== 'object') return
+          for (const field of fields) {
+            const value = item[field]
+            if (typeof value === 'string' && value.trim().length > 0) {
+              payload[`frontmatter.${key}.${index}.${field}`] = value
+            }
+          }
+        })
+      }
       if (content.trim().length > 0) payload.body = content
 
       if (Object.keys(payload).length === 0) {
@@ -189,6 +212,20 @@ async function main() {
       for (const key of TRANSLATABLE_KEYS) {
         const flat = `frontmatter.${key}`
         if (typeof translated[flat] === 'string') newData[key] = translated[flat]
+      }
+      for (const [key, fields] of Object.entries(TRANSLATABLE_LIST_FIELDS)) {
+        if (!Array.isArray(newData[key])) continue
+        // `newData` is a shallow copy, so rebuild the items instead of
+        // mutating them — they are still shared with `data`.
+        newData[key] = newData[key].map((item, index) => {
+          if (!item || typeof item !== 'object') return item
+          const next = { ...item }
+          for (const field of fields) {
+            const flat = `frontmatter.${key}.${index}.${field}`
+            if (typeof translated[flat] === 'string') next[field] = translated[flat]
+          }
+          return next
+        })
       }
       const newBody =
         typeof translated.body === 'string' ? translated.body : content
