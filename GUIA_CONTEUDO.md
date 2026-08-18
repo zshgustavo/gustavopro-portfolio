@@ -17,6 +17,9 @@ public/posts/
 ├── about/
 │   ├── main-pt.md        # Bio completa da seção "Sobre"
 │   └── main-en.md        # Gerado automaticamente
+├── stack/
+│   ├── main-pt.md        # Categorias e ferramentas
+│   └── main-en.md        # Gerado automaticamente
 ├── contact/
 │   ├── main-pt.md        # Texto da seção "Contato"
 │   └── main-en.md        # Gerado automaticamente
@@ -137,7 +140,26 @@ stats:
 
 - **Texto da bio:** `public/posts/about/main-pt.md` (body do markdown). Rode `npm run translate` para regenerar o EN.
 - **Imagem:** `public/images/about.png`.
-- **Stack e Certificações:** são seções de UI, não de conteúdo — os grupos da stack ficam em `src/i18n.js` (`skills.groups`) e a lista de certificações em `src/components/Certifications.jsx` (campo `img` reservado para os badges oficiais).
+- **Certificações:** ainda é seção de UI — a lista fica em `src/components/Certifications.jsx` (campo `img` reservado para os badges oficiais).
+
+## Editar a seção "Stack"
+
+`public/posts/stack/main-pt.md`. Cada item de `groups` vira uma célula da grade:
+
+```yaml
+---
+title: stack
+groups:
+  - cat: Dados
+    items: SQL Avançado · Spark · DBT · BigQuery · Databricks
+  - cat: Orquestração
+    items: Apache Airflow · Astronomer · Data Factory
+---
+```
+
+- Separe as ferramentas com `·` (ponto médio) — o script de tradução preserva o separador.
+- A grade tem 2 colunas, então um número **par** de grupos mantém o bloco retangular.
+- `npm run translate` traduz `cat` e `items`; nomes próprios (BigQuery, Apache Airflow…) passam intactos pelo glossário do prompt.
 - **Imagem da bio:** substitua `public/images/about.png` localmente (ou troque para uma URL do Cloudinary se preferir).
 
 ---

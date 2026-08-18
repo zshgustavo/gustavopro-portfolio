@@ -70,7 +70,10 @@ const TRANSLATABLE_KEYS = ['title', 'subtitle', 'description', 'role']
  * Portuguese source into the English file — silently regressing a translation
  * that was already correct.
  */
-const TRANSLATABLE_LIST_FIELDS = { stats: ['label'] }
+const TRANSLATABLE_LIST_FIELDS = {
+  stats: ['label'],
+  groups: ['cat', 'items'],
+}
 
 /**
  * gray-matter is pointed at the same js-yaml schema the browser uses
@@ -423,6 +426,7 @@ ABSOLUTE RULES:
 - Keep proper nouns, brand names, product names, and technical jargon unchanged. Examples: Google Cloud, Microsoft Azure, AWS, OCI, IBM Cloud, Apache Airflow, Astronomer, Databricks, DBT, BigQuery, Data Factory, Spark, Python, SQL, Apache, GDG Cloud Brasília, Google I/O, Google Cloud Next, GDG Summit, Ford, C6 Bank, CI&T, Cognizant, Sentry, Github, Oracle, Cisco, CrewAI, Manus, MCP, EC2, S3, Compute Engine, Cloud Storage, Tailwind CSS, React.
 - Keep certifications, acronyms, URLs, file paths, IDs, dates, locations, and tag values unchanged.
 - Preserve emojis and emoticons (e.g. ":)", "😀") exactly.
+- Preserve separator characters and their spacing in inline lists: "A · B · C" must stay "A · B · C" — never swap "·" for a comma or a slash.
 - Keep tone warm and professional, matching the original voice.
 - If an input value already appears to be in English, return it unchanged.
 
