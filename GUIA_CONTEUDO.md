@@ -20,6 +20,9 @@ public/posts/
 ├── stack/
 │   ├── main-pt.md        # Categorias e ferramentas
 │   └── main-en.md        # Gerado automaticamente
+├── certifications/
+│   ├── main-pt.md        # Provedores e badges
+│   └── main-en.md        # Gerado automaticamente
 ├── contact/
 │   ├── main-pt.md        # Texto da seção "Contato"
 │   └── main-en.md        # Gerado automaticamente
@@ -140,7 +143,26 @@ stats:
 
 - **Texto da bio:** `public/posts/about/main-pt.md` (body do markdown). Rode `npm run translate` para regenerar o EN.
 - **Imagem:** `public/images/about.png`.
-- **Certificações:** ainda é seção de UI — a lista fica em `src/components/Certifications.jsx` (campo `img` reservado para os badges oficiais).
+## Editar a seção "Certificações"
+
+`public/posts/certifications/main-pt.md`. Cada item de `certs` vira uma célula:
+
+```yaml
+---
+title: certificações
+subtitle: Especialista multi-cloud certificado
+certs:
+  - code: gcp
+    name: Google Cloud
+    img: https://images.credly.com/.../badge.png   # opcional
+  - code: az
+    name: Microsoft Azure
+---
+```
+
+- **`img` é o badge oficial** (Credly, Google Cloud). Com a URL, a imagem aparece; **sem ela, a célula mostra `[code]` em mono** — placeholder proposital, não erro.
+- `code` é a sigla curta usada nesse placeholder; serve também como chave da célula.
+- Os nomes dos provedores são nomes próprios: **não são traduzidos**, e o mesmo valor vale para os dois idiomas. Só `title` e `subtitle` passam pelo tradutor.
 
 ## Editar a seção "Stack"
 
