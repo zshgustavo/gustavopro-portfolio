@@ -2,10 +2,8 @@
 title: CONTACT
 subtitle: EXPLORE
 email: contato@gustavosantospro.com
-formEndpoint: https://formspree.io/f/YOUR_FORM_ID
 ---
 
-
-Do you have a project in mind or would you like to talk about technology? Get in touch with me through the form on the side or via social media.
+Do you have a project in mind or would you like to talk about technology? Reach out through the LinkedIn profile on the side or any of my social links.
 
 I will respond as soon as possible!

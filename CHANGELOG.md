@@ -10,6 +10,49 @@ Mudanças aqui ficam pendentes até o próximo commit.
 
 ---
 
+## [2026-08-17] — Review técnico e saneamento
+
+### Adicionado
+- **`docs/REVIEW.md`** — review técnico completo do projeto: análise por pasta, script de tradução e arquivos de configuração, com 34 achados classificados por severidade e um backlog do que ficou fora de escopo.
+- **`src/lib/frontmatter.js`** — parser de frontmatter único, compartilhado entre o runtime e o script de tradução. Usa `js-yaml` com `CORE_SCHEMA` (mantém datas como string, que é o que `Events.formatDate` espera).
+- **`scripts/translations.lock.json`** — manifesto com o hash SHA-256 de cada `*-pt.md`, versionado. Substitui a comparação de `mtime`.
+- **`npm run translate:check`** — verifica se as traduções estão em dia sem chamar a API; sai com código 1 se algo estiver desatualizado.
+- **`.env.example`** — documenta `GEMINI_API_KEY` e `GEMINI_MODEL`.
+- Persistência do idioma escolhido em `localStorage`, com detecção do idioma do navegador na primeira visita.
+
+### Corrigido
+- **Tradução não-determinística**: a decisão de retraduzir usava `mtime`, que o git não preserva — em clone novo (CI, Docker) o resultado era aleatório. Agora é por hash de conteúdo, normalizado para LF.
+- **`npm run build` quebrava sem `GEMINI_API_KEY`**: o script fazia `exit(1)`. Agora avisa quais arquivos estão desatualizados e mantém os `-en.md` commitados.
+- **Chave de API na query string** trocada pelo header `x-goog-api-key`; mensagens de erro passam por redação para não ecoar o segredo.
+- **Parser de frontmatter**: o parser artesanal ignorava silenciosamente chaves com hífen e todo YAML aninhado, e "parseava" arrays por acidente (um `JSON.parse` que sempre falhava e caía no `catch`).
+- **500ms de atraso deliberado no primeiro paint** removidos do `App.jsx` (eram um spinner simulado, sem nada real sendo aguardado).
+- Retry com backoff exponencial e timeout nas chamadas ao Gemini — antes um 429 transitório derrubava o build.
+- A resposta do modelo passa a ser validada contra as chaves enviadas; antes, uma chave faltante fazia o texto em português ser gravado silenciosamente no arquivo em inglês.
+- Texto da seção **Contato** ainda dizia "através do formulário ao lado", descrevendo o formulário removido em `d4fa63f` — estava visível em produção.
+- Corpo do markdown da seção Contato passa a ser renderizado com `ReactMarkdown`, como já acontecia em Sobre.
+
+### Alterado
+- `useContent` passa a receber `(section, base, lang)` e resolver o fallback de idioma internamente, reusando o padrão de candidatos que `useContentList` já tinha. Sobre, Hero e Contato faziam **dois** fetches cada (e dois do mesmo arquivo quando o idioma era PT); agora fazem um.
+- Ambos os hooks passaram a usar `AbortController`, evitando que uma resposta antiga sobrescreva a nova ao trocar de idioma rapidamente.
+- O script de tradução usa `matter.stringify()` no lugar do serializador manual, que não fazia escaping — um valor traduzido com `:` ou quebra de linha corrompia o frontmatter.
+
+### Removido
+- `react-router-dom` das dependências — não havia nenhum uso no projeto (a navegação é por scroll suave).
+- Aliases `@`, `@posts` e `@images` e `assetsInclude` do `vite.config.js` — todos sem uso, e dois deles apontando para caminhos absolutos inválidos.
+- 14 chaves órfãs de i18n (× 2 idiomas), resquício do formulário de contato e do filtro "Todos / Destaques".
+- ~60 linhas de CSS do formulário removido (`.contact-form`, `.form-group`, `.submit-btn`).
+- `defaultProjects` e `defaultAbout` — conteúdo de exemplo ("Projeto Exemplo 1") que apareceria em produção caso o `index.json` falhasse.
+- `public/posts/contact/social.md` — arquivo morto, não lido por nenhum componente e ilegível pelo parser (YAML aninhado).
+- Import não usado de `SocialIcons` no `App.jsx`.
+
+### Documentação
+- `README.md`: corrigido "Vite 7" → Vite 8, removido React Router da stack (nunca foi usado), documentado o novo comportamento da tradução.
+- `GUIA_CONTEUDO.md`: unificado o path do Cloudinary (`gustavopro-portfolio/…`), adicionada a seção "Como o script decide o que traduzir".
+- `samples/README.md`: alinhado com o guia — projetos usam a OG image do GitHub, não upload no Cloudinary.
+- `package.json`: `license` passou de `ISC` (que contradizia o `LICENSE.md`) para `UNLICENSED`, com `private: true`, `author` e `engines.node`.
+
+---
+
 ## [2026-06-05] — Revamp das seções Sobre, Projetos e Eventos
 
 ### Adicionado
@@ -17,7 +60,7 @@ Mudanças aqui ficam pendentes até o próximo commit.
 - 6 eventos reais com data, local, descrição e álbum:
   Feira de Carreiras UCB 2º Edição, GDG Summit Lima 2025, TDC Summit IA,
   Google DevFest Cerrado (10 anos), Google I/O Extended, Campus Party CPBR16.
-- 3 projetos reais: **FluentOps**, **DataWiki - Specification Generator**, **HoraGram**.
+- 4 projetos reais: **FluentOps**, **DataWiki - Specification Generator**, **HoraGram** e o analisador de custos de cloud.
 - Botão **"Ver mais"** nos cards de evento, apontando para álbum externo (Cloudinary Collection ou Google Photos) via novo campo `albumUrl` no frontmatter.
 - Tradução `events.viewMore` (PT: "Ver mais" / EN: "See more").
 - **`GUIA_CONTEUDO.md`** — guia interno passo-a-passo para adicionar/editar eventos, projetos e bio.

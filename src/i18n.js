@@ -1,151 +1,149 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-// Translation resources for Portuguese and English
+/**
+ * UI labels live here; page CONTENT lives in `public/posts/` as markdown, one
+ * file per language. Two mechanisms on purpose: labels are code, prose is not.
+ *
+ * Only keys actually rendered by a component belong in here — orphaned keys
+ * survive refactors invisibly and rot.
+ */
 const resources = {
   pt: {
     translation: {
-      // Navigation
       nav: {
         about: 'Sobre',
         projects: 'Projetos',
         events: 'Eventos',
-        contact: 'Contato',
         contactMe: 'CONTATO'
       },
-      // Hero Section
       hero: {
         greeting: 'Olá, eu sou',
         role: 'Engenheiro de Dados e Cloud Sênior'
       },
-      // About Section
       about: {
         title: 'SOBRE MIM',
-        explore: 'EXPLORE',
-        readMore: 'LEIA MAIS',
-        trajectory: 'TRAJETÓRIA',
-        experience: 'EXPERIÊNCIA'
+        readMore: 'LEIA MAIS'
       },
-      // Projects Section
       projects: {
         title: 'PROJETOS',
         subtitle: 'Alguns dos projetos em que participei',
         viewCode: 'Ver Código',
-        viewSite: 'Ver Site',
-        all: 'TODOS',
-        featured: 'DESTAQUES'
+        viewSite: 'Ver Site'
       },
-      // Events Section
       events: {
         title: 'EVENTOS',
         subtitle: 'Eventos que coordenei ou palestrei',
-        viewPhotos: 'Ver Fotos',
         viewMore: 'Ver mais',
         coordinated: 'Coordenado',
         speaker: 'Palestrante'
       },
-      // Contact Section
       contact: {
         title: 'CONTATO',
         subtitle: 'Entre em contato comigo',
-        explore: 'EXPLORE',
-        name: 'Nome',
-        email: 'E-mail',
-        message: 'Mensagem',
-        submit: 'ENVIAR',
-        namePlaceholder: 'Seu nome',
-        emailPlaceholder: 'seu@email.com',
-        messagePlaceholder: 'Sua mensagem...'
+        explore: 'EXPLORE'
       },
-      // Footer
       footer: {
         backToTop: 'VOLTAR AO TOPO',
         rights: 'Todos os direitos reservados.'
       },
-      // Common
       common: {
-        loading: 'Carregando...',
-        error: 'Erro ao carregar conteúdo'
+        loading: 'Carregando...'
       }
     }
   },
   en: {
     translation: {
-      // Navigation
       nav: {
         about: 'About',
         projects: 'Projects',
         events: 'Events',
-        contact: 'Contact',
         contactMe: 'CONTACT ME'
       },
-      // Hero Section
       hero: {
         greeting: 'Hi, I am',
         role: 'Senior Data & Cloud Engineer'
       },
-      // About Section
       about: {
         title: 'ABOUT ME',
-        explore: 'EXPLORE',
-        readMore: 'READ MORE',
-        trajectory: 'TRAJECTORY',
-        experience: 'EXPERIENCE'
+        readMore: 'READ MORE'
       },
-      // Projects Section
       projects: {
         title: 'PROJECTS',
         subtitle: 'Some of the projects I participated in',
         viewCode: 'View Code',
-        viewSite: 'View Site',
-        all: 'ALL',
-        featured: 'FEATURED'
+        viewSite: 'View Site'
       },
-      // Events Section
       events: {
         title: 'EVENTS',
         subtitle: 'Events I coordinated or spoke at',
-        viewPhotos: 'View Photos',
         viewMore: 'See more',
         coordinated: 'Coordinated',
         speaker: 'Speaker'
       },
-      // Contact Section
       contact: {
         title: 'CONTACT',
         subtitle: 'Get in touch with me',
-        explore: 'EXPLORE',
-        name: 'Name',
-        email: 'Email',
-        message: 'Message',
-        submit: 'SUBMIT',
-        namePlaceholder: 'Your name',
-        emailPlaceholder: 'your@email.com',
-        messagePlaceholder: 'Your message...'
+        explore: 'EXPLORE'
       },
-      // Footer
       footer: {
         backToTop: 'BACK TO TOP',
         rights: 'All rights reserved.'
       },
-      // Common
       common: {
-        loading: 'Loading...',
-        error: 'Error loading content'
+        loading: 'Loading...'
       }
     }
   }
 };
 
+const STORAGE_KEY = 'portfolio.lang';
+const SUPPORTED_LANGUAGES = ['pt', 'en'];
+const DEFAULT_LANGUAGE = 'pt';
+
+/**
+ * Resolve the starting language: a previous explicit choice wins, then the
+ * browser preference, then Portuguese.
+ *
+ * Kept dependency-free on purpose — i18next-browser-languagedetector would add
+ * a package for ~10 lines. localStorage access is guarded because it throws in
+ * private mode and when cookies are disabled.
+ */
+function detectInitialLanguage() {
+  if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
+
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored && SUPPORTED_LANGUAGES.includes(stored)) return stored;
+  } catch {
+    // Storage unavailable — fall through to browser preference.
+  }
+
+  const browserLang = window.navigator?.language?.split('-')[0]?.toLowerCase();
+  return SUPPORTED_LANGUAGES.includes(browserLang) ? browserLang : DEFAULT_LANGUAGE;
+}
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'pt', // Default language is Portuguese
-    fallbackLng: 'en',
+    lng: detectInitialLanguage(),
+    fallbackLng: DEFAULT_LANGUAGE,
+    // Collapses regional codes (pt-BR → pt) so `i18n.language` stays usable as
+    // a content-filename suffix.
+    supportedLngs: SUPPORTED_LANGUAGES,
     interpolation: {
       escapeValue: false // React already escapes values
     }
   });
+
+// Remember the choice so a reload doesn't reset the visitor to Portuguese.
+i18n.on('languageChanged', (lng) => {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, lng);
+  } catch {
+    // Storage unavailable — the language still applies for this session.
+  }
+});
 
 export default i18n;

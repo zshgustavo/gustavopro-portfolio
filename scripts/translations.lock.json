@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "entries": {
+    "public/posts/about/hero-pt.md": {
+      "sourceSha256": "ba953fa85e0e60baf72d1295760bbac564b178aa06127c57e537fc27efd875b7",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/about/main-pt.md": {
+      "sourceSha256": "b231550aeae1488555a9df19e9fedc1a5980bd79431a57f32d64bacd42f45553",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/contact/main-pt.md": {
+      "sourceSha256": "663bba2db7ff9a354e181ed29f46890425ba310f8e002245a0e751515502b3d6",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/events/event-1-pt.md": {
+      "sourceSha256": "f5c26b72c1f780c03b7b419e466bb12815cc00e042cd94a70c7e5b7d2b7eb0b2",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/events/event-2-pt.md": {
+      "sourceSha256": "504cc362ef0b83e67d568ab04c53c1fe131a902f0d6f2c5f8170acf1be83c7a9",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/events/event-3-pt.md": {
+      "sourceSha256": "99c3c4b11fd5b07747fc8959b4ce5d80445bad6e5d6375ecfb0abaf1aaa36b00",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/events/event-4-pt.md": {
+      "sourceSha256": "5c9bb8c25962d0e0c54f3c69c3e83f231cceb2ce36243f590b6a7f0e16058b2c",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/events/event-5-pt.md": {
+      "sourceSha256": "ef1f7e0798d4ae7b90a03a8458a5cb0b4805a7983c315189531dc045a96539d4",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/events/event-6-pt.md": {
+      "sourceSha256": "e5334050e1e00380baab65905e704a9ec16d14170bbdab6fc9cc9b8509b981b7",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/projects/project-1-pt.md": {
+      "sourceSha256": "bce53699b79c674760893462226cee38a754f4e5fffbafa1300819e9b4da761b",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/projects/project-2-pt.md": {
+      "sourceSha256": "ea0846d8314d9da10ec1de1b0f61f288ba303da7e83f9628f51f6f4c3466cebe",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/projects/project-3-pt.md": {
+      "sourceSha256": "66e5d47778719064e33dad92b3502bc1dd4c3e5ebf62ba8e83b2e941216040e6",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    },
+    "public/posts/projects/project-4-pt.md": {
+      "sourceSha256": "c692e6b9f850f2402f3fd62439da03b2aa3a5ade736ad333a1daedf1e70a9bf4",
+      "model": "seed",
+      "translatedAt": "2026-08-17T00:00:00.000Z"
+    }
+  }
+}

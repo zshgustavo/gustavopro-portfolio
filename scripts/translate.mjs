@@ -2,107 +2,185 @@
 /**
  * translate.mjs — Build-time PT → EN translator using Google Gemini.
  *
- * Walks public/posts/ for every `<base>-pt.md` file and generates the matching
- * `<base>-en.md` whenever the EN file is missing or older than its PT source.
+ * Walks public/posts/ for every `<base>-pt.md` and regenerates the matching
+ * `<base>-en.md` whenever the Portuguese source has actually changed.
+ *
+ * Staleness is decided by hashing the PT source and comparing against
+ * `scripts/translations.lock.json`, NOT by file mtime: git does not preserve
+ * mtime, so on a fresh clone (CI, Docker `COPY . .`) every file gets the
+ * checkout timestamp and an mtime comparison becomes a coin flip.
  *
  * Usage:
- *   node scripts/translate.mjs            # incremental (only stale files)
- *   node scripts/translate.mjs --force    # regenerate all
- *   node scripts/translate.mjs --dry-run  # show what would change, no API call
+ *   node scripts/translate.mjs            # translate what changed
+ *   node scripts/translate.mjs --force    # regenerate everything
+ *   node scripts/translate.mjs --dry-run  # report only, no API call, no write
+ *   node scripts/translate.mjs --check    # exit 1 if anything is out of date
  *
- * Required env: GEMINI_API_KEY (loaded from .env at the project root).
+ * Without GEMINI_API_KEY the script does NOT fail the build: it warns about
+ * stale files and leaves the committed `-en.md` in place. `--check` is the
+ * mode that turns "out of date" into a non-zero exit, for CI.
+ *
+ * Required env (only to actually translate): GEMINI_API_KEY, read from .env
+ * at the project root.
  * Optional env: GEMINI_MODEL (default: gemini-3.1-flash-lite)
  */
 
-import {
-  readdir,
-  readFile,
-  writeFile,
-  stat,
-} from 'node:fs/promises'
+import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { existsSync, readFileSync } from 'node:fs'
-import { dirname, join, resolve } from 'node:path'
+import { createHash } from 'node:crypto'
+import { dirname, join, resolve, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
+import yaml from 'js-yaml'
+import { YAML_SCHEMA, YAML_DUMP_OPTIONS } from '../src/lib/frontmatter.js'
 
 // ── paths ───────────────────────────────────────────────────────────────────
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 const POSTS_DIR = resolve(ROOT, 'public/posts')
+const MANIFEST_PATH = resolve(__dirname, 'translations.lock.json')
 
 // ── flags ───────────────────────────────────────────────────────────────────
 const FORCE = process.argv.includes('--force')
 const DRY_RUN = process.argv.includes('--dry-run')
+const CHECK = process.argv.includes('--check')
 
-// ── env loader (no external dependency) ─────────────────────────────────────
+// ── env ─────────────────────────────────────────────────────────────────────
 loadDotenv(resolve(ROOT, '.env'))
 
 const API_KEY = process.env.GEMINI_API_KEY
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite'
 
+// ── API tuning ──────────────────────────────────────────────────────────────
+const MAX_ATTEMPTS = 3
+const BASE_RETRY_DELAY_MS = 1000
+const REQUEST_TIMEOUT_MS = 60_000
+
 // ── frontmatter keys eligible for translation ──────────────────────────────
-// Everything else (id, date, urls, paths, tags, photos, type, etc.) stays as-is.
+// Everything else (id, date, urls, paths, tags, type, location, name…) is
+// passed through untouched.
 const TRANSLATABLE_KEYS = ['title', 'subtitle', 'description', 'role']
+
+/**
+ * gray-matter is pointed at the same js-yaml schema the browser uses
+ * (src/lib/frontmatter.js), so anything written here is guaranteed to parse
+ * identically at runtime. This is what replaced the old hand-rolled serializer.
+ */
+const MATTER_OPTIONS = {
+  engines: {
+    yaml: {
+      parse: (str) => yaml.load(str, { schema: YAML_SCHEMA }),
+      stringify: (obj) => yaml.dump(obj, YAML_DUMP_OPTIONS),
+    },
+  },
+}
+
+/** Non-retryable API failure (4xx other than 429). */
+class FatalApiError extends Error {}
 
 // ───────────────────────────────────────────────────────────────────────────
 async function main() {
   const allFiles = await walk(POSTS_DIR)
-  const ptFiles = allFiles.filter((f) => f.endsWith('-pt.md'))
+  const ptFiles = allFiles.filter((f) => f.endsWith('-pt.md')).sort()
 
   if (ptFiles.length === 0) {
     console.log('No *-pt.md files found under public/posts/. Nothing to do.')
     return
   }
 
-  console.log(
-    `Found ${ptFiles.length} Portuguese source file(s).` +
-      (FORCE ? ' (force mode)' : '') +
-      (DRY_RUN ? ' (dry run)' : ''),
-  )
+  const manifest = await loadManifest()
 
-  let processed = 0
-  let skipped = 0
-  let errors = 0
+  const mode = CHECK
+    ? ' (check)'
+    : (FORCE ? ' (force)' : '') + (DRY_RUN ? ' (dry run)' : '')
+  console.log(`Found ${ptFiles.length} Portuguese source file(s).${mode}`)
 
+  // ── work out what changed ────────────────────────────────────────────────
+  const jobs = []
   for (const ptPath of ptFiles) {
     const enPath = ptPath.replace(/-pt\.md$/, '-en.md')
-    const rel = ptPath.slice(ROOT.length + 1)
+    const key = manifestKey(ptPath)
+    const raw = await readFile(ptPath, 'utf8')
+    const hash = sha256(raw)
 
+    const isStale =
+      FORCE ||
+      !existsSync(enPath) ||
+      manifest.entries[key]?.sourceSha256 !== hash
+
+    jobs.push({ ptPath, enPath, key, raw, hash, isStale })
+  }
+
+  const staleJobs = jobs.filter((j) => j.isStale)
+  const upToDate = jobs.length - staleJobs.length
+
+  // ── --check: report and exit, never touch the API ────────────────────────
+  if (CHECK) {
+    if (staleJobs.length === 0) {
+      console.log(`\n✓ All ${jobs.length} translation(s) are up to date.`)
+      return
+    }
+    console.error(`\n✗ ${staleJobs.length} translation(s) out of date:`)
+    for (const j of staleJobs) console.error(`  - ${j.key}`)
+    console.error('\nRun `npm run translate` to regenerate them.')
+    process.exitCode = 1
+    return
+  }
+
+  for (const j of jobs.filter((x) => !x.isStale)) {
+    console.log(`✓ up-to-date  ${j.key}`)
+  }
+
+  if (staleJobs.length === 0) {
+    console.log(`\nDone. translated=0 up-to-date=${upToDate} errors=0`)
+    if (!DRY_RUN && pruneManifest(manifest, jobs) > 0) await saveManifest(manifest)
+    return
+  }
+
+  // ── no API key: warn, keep the committed EN files, do NOT fail the build ─
+  if (!API_KEY && !DRY_RUN) {
+    console.warn(
+      `\n⚠ ${staleJobs.length} file(s) changed but GEMINI_API_KEY is not set.\n` +
+        '  Keeping the existing -en.md files. Set the key and run ' +
+        '`npm run translate` to refresh them:',
+    )
+    for (const j of staleJobs) console.warn(`  - ${j.key}`)
+    return
+  }
+
+  // ── translate ────────────────────────────────────────────────────────────
+  let processed = 0
+  let errors = 0
+
+  for (const job of staleJobs) {
     try {
-      if (!(await isStale(ptPath, enPath))) {
-        console.log(`✓ up-to-date  ${rel}`)
-        skipped++
-        continue
-      }
-
-      const raw = await readFile(ptPath, 'utf8')
-      const { data, content } = matter(raw)
+      const { data, content } = matter(job.raw, MATTER_OPTIONS)
 
       const payload = {}
       for (const key of TRANSLATABLE_KEYS) {
-        const v = data[key]
-        if (typeof v === 'string' && v.trim().length > 0) {
-          payload[`frontmatter.${key}`] = v
+        const value = data[key]
+        if (typeof value === 'string' && value.trim().length > 0) {
+          payload[`frontmatter.${key}`] = value
         }
       }
       if (content.trim().length > 0) payload.body = content
 
       if (Object.keys(payload).length === 0) {
-        console.log(`✓ no text    ${rel}`)
-        skipped++
+        console.log(`✓ no text     ${job.key}`)
+        // Nothing translatable: copy the source through so the EN file exists
+        // and record it, otherwise it stays "stale" forever.
+        if (!DRY_RUN) {
+          await writeFile(job.enPath, job.raw, 'utf8')
+          recordEntry(manifest, job)
+        }
         continue
       }
 
-      console.log(`→ translating ${rel}`)
+      console.log(`→ translating ${job.key}`)
       if (DRY_RUN) {
-        console.log('  (dry run — would call Gemini for these keys:', Object.keys(payload), ')')
+        console.log(`  would send keys: ${Object.keys(payload).join(', ')}`)
         processed++
         continue
-      }
-
-      if (!API_KEY && !DRY_RUN) {
-        console.error(`✗ Missing GEMINI_API_KEY. Required to translate: ${rel}`)
-        process.exit(1)
       }
 
       const translated = await translateBatch(payload)
@@ -110,91 +188,193 @@ async function main() {
       const newData = { ...data }
       for (const key of TRANSLATABLE_KEYS) {
         const flat = `frontmatter.${key}`
-        if (typeof translated[flat] === 'string') {
-          newData[key] = translated[flat]
-        }
+        if (typeof translated[flat] === 'string') newData[key] = translated[flat]
       }
       const newBody =
         typeof translated.body === 'string' ? translated.body : content
 
-      const output = serializeMarkdown(newData, newBody)
-      await writeFile(enPath, output, 'utf8')
-      console.log(`  wrote ${enPath.slice(ROOT.length + 1)}`)
+      const output = matter.stringify(newBody.trim(), newData, MATTER_OPTIONS)
+      await writeFile(job.enPath, output, 'utf8')
+      recordEntry(manifest, job)
+
+      console.log(`  wrote ${manifestKey(job.enPath)}`)
       processed++
     } catch (err) {
-      console.error(`✗ error on ${rel}: ${err.message}`)
+      console.error(`✗ error on ${job.key}: ${err.message}`)
       errors++
     }
   }
 
-  console.log(
-    `\nDone. translated=${processed} up-to-date=${skipped} errors=${errors}`,
-  )
-  if (errors > 0) process.exit(1)
-}
-
-// ── helpers ────────────────────────────────────────────────────────────────
-
-async function walk(dir) {
-  const entries = await readdir(dir, { withFileTypes: true })
-  const out = []
-  for (const e of entries) {
-    const full = join(dir, e.name)
-    if (e.isDirectory()) out.push(...(await walk(full)))
-    else if (e.isFile()) out.push(full)
+  if (!DRY_RUN) {
+    pruneManifest(manifest, jobs)
+    await saveManifest(manifest)
   }
-  return out
+
+  console.log(
+    `\nDone. translated=${processed} up-to-date=${upToDate} errors=${errors}`,
+  )
+  if (errors > 0) process.exitCode = 1
 }
 
-async function isStale(ptPath, enPath) {
-  if (FORCE) return true
-  if (!existsSync(enPath)) return true
-  const [ptStat, enStat] = await Promise.all([stat(ptPath), stat(enPath)])
-  return ptStat.mtimeMs > enStat.mtimeMs
+// ── manifest ───────────────────────────────────────────────────────────────
+
+/** Repo-relative path with forward slashes, stable across Windows and Linux. */
+function manifestKey(absPath) {
+  return relative(ROOT, absPath).split(sep).join('/')
 }
+
+/**
+ * Hash of the *normalized* source: CRLF collapsed to LF and any BOM stripped.
+ *
+ * The repo sets core.autocrlf=true and relies on .gitattributes to keep the
+ * working tree at LF. Normalizing here means the manifest stays valid even if
+ * a checkout lands with CRLF, instead of marking every file stale.
+ */
+function sha256(text) {
+  const withoutBom = text.charCodeAt(0) === 0xfeff ? text.slice(1) : text
+  const normalized = withoutBom.replace(/\r\n/g, '\n')
+  return createHash('sha256').update(normalized, 'utf8').digest('hex')
+}
+
+async function loadManifest() {
+  if (!existsSync(MANIFEST_PATH)) return { version: 1, entries: {} }
+  try {
+    const parsed = JSON.parse(await readFile(MANIFEST_PATH, 'utf8'))
+    return { version: 1, entries: parsed.entries ?? {} }
+  } catch (err) {
+    console.warn(`⚠ Could not read the manifest (${err.message}). Rebuilding it.`)
+    return { version: 1, entries: {} }
+  }
+}
+
+function recordEntry(manifest, job) {
+  manifest.entries[job.key] = {
+    sourceSha256: job.hash,
+    // Recorded for traceability only — a model change does not by itself mark
+    // a file stale. Use --force after switching models.
+    model: MODEL,
+    translatedAt: new Date().toISOString(),
+  }
+}
+
+/**
+ * Drop entries whose PT source no longer exists. Mutates `manifest` and returns
+ * how many were removed; saving is the caller's job.
+ */
+function pruneManifest(manifest, jobs) {
+  const live = new Set(jobs.map((j) => j.key))
+  let removed = 0
+  for (const key of Object.keys(manifest.entries)) {
+    if (!live.has(key)) {
+      delete manifest.entries[key]
+      removed++
+    }
+  }
+  if (removed > 0) console.log(`  pruned ${removed} orphaned manifest entry(ies)`)
+  return removed
+}
+
+async function saveManifest(manifest) {
+  const sorted = {}
+  for (const key of Object.keys(manifest.entries).sort()) {
+    sorted[key] = manifest.entries[key]
+  }
+  const output = JSON.stringify({ version: 1, entries: sorted }, null, 2)
+  await writeFile(MANIFEST_PATH, `${output}\n`, 'utf8')
+}
+
+// ── translation ────────────────────────────────────────────────────────────
 
 async function translateBatch(payload) {
-  const prompt = buildPrompt(payload)
+  const data = await callGemini(buildPrompt(payload))
 
-  const url =
-    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.2,
-        responseMimeType: 'application/json',
-      },
-    }),
-  })
-
-  if (!res.ok) {
-    const body = await res.text()
-    throw new Error(`Gemini API ${res.status}: ${body.slice(0, 400)}`)
-  }
-
-  const data = await res.json()
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text
-  if (!text) {
-    throw new Error('Empty response from Gemini')
-  }
+  if (!text) throw new Error('Empty response from Gemini')
 
   let parsed
   try {
     parsed = JSON.parse(text)
-  } catch (e) {
-    throw new Error(
-      `Gemini returned non-JSON: ${text.slice(0, 200)}…`,
-    )
+  } catch {
+    throw new Error(`Gemini returned non-JSON: ${text.slice(0, 200)}…`)
   }
 
-  if (typeof parsed !== 'object' || parsed === null) {
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
     throw new Error('Gemini response is not a JSON object')
   }
+
+  // Reject partial responses rather than silently writing Portuguese text into
+  // the English file, which is what the previous permissive merge did.
+  const expected = Object.keys(payload)
+  const missing = expected.filter((k) => typeof parsed[k] !== 'string')
+  if (missing.length > 0) {
+    throw new Error(`Gemini response missing key(s): ${missing.join(', ')}`)
+  }
+
+  const unexpected = Object.keys(parsed).filter((k) => !expected.includes(k))
+  if (unexpected.length > 0) {
+    console.warn(`  ⚠ ignoring unexpected key(s): ${unexpected.join(', ')}`)
+  }
+
   return parsed
+}
+
+async function callGemini(prompt) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: 0.2,
+      responseMimeType: 'application/json',
+    },
+  })
+
+  let lastError
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Header rather than `?key=` so the secret cannot leak through
+          // proxy logs or an echoed request URL in an error body.
+          'x-goog-api-key': API_KEY,
+        },
+        body,
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      })
+
+      if (res.ok) return res.json()
+
+      const detail = redactKey(await res.text()).slice(0, 300)
+      const message = `Gemini API ${res.status}: ${detail}`
+
+      // 429 and 5xx are worth another go; other 4xx are our fault.
+      if (res.status !== 429 && res.status < 500) throw new FatalApiError(message)
+      lastError = new Error(message)
+    } catch (err) {
+      if (err instanceof FatalApiError) throw err
+      lastError =
+        err.name === 'TimeoutError' || err.name === 'AbortError'
+          ? new Error(`request timed out after ${REQUEST_TIMEOUT_MS}ms`)
+          : err
+    }
+
+    if (attempt < MAX_ATTEMPTS) {
+      const delay = BASE_RETRY_DELAY_MS * 2 ** (attempt - 1)
+      console.log(`  retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delay}ms — ${lastError.message}`)
+      await sleep(delay)
+    }
+  }
+
+  throw lastError
+}
+
+function redactKey(text) {
+  return API_KEY ? text.split(API_KEY).join('***') : text
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms))
 }
 
 function buildPrompt(payload) {
@@ -219,36 +399,17 @@ INPUT:
 ${JSON.stringify(payload, null, 2)}`
 }
 
-/**
- * Serialize frontmatter + body in the same flat format the rest of the project
- * uses (inline arrays, plain key: value), so the in-browser parser keeps working
- * and diffs stay clean.
- */
-function serializeMarkdown(data, body) {
-  const lines = ['---']
-  for (const [k, v] of Object.entries(data)) {
-    lines.push(serializeKv(k, v))
-  }
-  lines.push('---', '')
-  const trimmedBody = body.replace(/^\n+/, '').replace(/\s+$/, '')
-  if (trimmedBody.length > 0) {
-    lines.push('', trimmedBody, '')
-  }
-  return lines.join('\n')
-}
+// ── helpers ────────────────────────────────────────────────────────────────
 
-function serializeKv(key, value) {
-  if (Array.isArray(value)) {
-    return `${key}: [${value.map(formatScalar).join(', ')}]`
+async function walk(dir) {
+  const entries = await readdir(dir, { withFileTypes: true })
+  const out = []
+  for (const e of entries) {
+    const full = join(dir, e.name)
+    if (e.isDirectory()) out.push(...(await walk(full)))
+    else if (e.isFile()) out.push(full)
   }
-  if (value === null || value === undefined) return `${key}: `
-  return `${key}: ${formatScalar(value)}`
-}
-
-function formatScalar(v) {
-  if (typeof v === 'string') return v
-  if (v instanceof Date) return v.toISOString().slice(0, 10)
-  return String(v)
+  return out
 }
 
 function loadDotenv(path) {
