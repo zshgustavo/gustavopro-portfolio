@@ -18,6 +18,10 @@ function Contact() {
   const { t, i18n } = useTranslation()
 
   const { content } = useContent('contact', 'main', i18n.language)
+  // The social links are defined once, in the Hero content, and reused here —
+  // they are the site's links, not this section's. Keeping a second copy in
+  // contact/main-*.md would be two sources of truth for the same six URLs.
+  const { content: hero } = useContent('hero', 'main', i18n.language)
 
   return (
     <section className="contact sec--dark" id="contact">
@@ -30,7 +34,7 @@ function Contact() {
         </div>
 
         <div className="contact-socials">
-          <SocialIcons iconSize={21} />
+          <SocialIcons socials={hero?.socials} iconSize={21} />
         </div>
       </div>
     </section>

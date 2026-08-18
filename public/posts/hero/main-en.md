@@ -10,4 +10,23 @@ stats:
     label: clouds
   - value: GDG
     label: organizer
+socials:
+  - id: linkedin
+    label: LinkedIn
+    url: https://www.linkedin.com/in/gustavribeiro
+  - id: github
+    label: GitHub
+    url: https://github.com/zshgustavo
+  - id: website
+    label: Website
+    url: https://gustavosantospro.com
+  - id: gravatar
+    label: Gravatar
+    url: https://gustavosantos.bio/
+  - id: gdg
+    label: GDG Cloud Brasília
+    url: https://gdg.community.dev/gdg-cloud-brasilia/
+  - id: lastfm
+    label: Last.fm
+    url: https://www.last.fm/pt/user/gustavo_ribeiro
 ---

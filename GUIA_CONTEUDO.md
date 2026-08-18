@@ -139,6 +139,25 @@ stats:
 - **Stats:** quantos você quiser — o componente renderiza a lista inteira. `value` em accent, `label` embaixo em cinza.
 - `npm run translate` cuida de `role`, `description` e dos `label` das stats. `name`, `photo` e `value` passam intactos.
 
+### Links sociais
+
+Também ficam no `hero/main-pt.md`, e são os links **do site inteiro** — a seção "Contato" reaproveita a mesma lista:
+
+```yaml
+socials:
+  - id: linkedin
+    label: LinkedIn
+    url: https://www.linkedin.com/in/gustavribeiro
+  - id: github
+    label: GitHub
+    url: https://github.com/zshgustavo
+```
+
+- **A ordem da lista é a ordem na tela.** Remover um item o esconde nos dois lugares.
+- **`id` escolhe o ícone.** Os disponíveis são `linkedin`, `github`, `website`, `gravatar`, `gdg` e `lastfm` — definidos em `ICONS`, no topo de `src/components/SocialIcons.jsx`.
+- **Rede nova exige o desenho do ícone:** adicione o path SVG ao `ICONS` com o mesmo `id`. Se o `id` não existir, o link é omitido e o motivo aparece como aviso no console do navegador (não falha em silêncio).
+- Os `label` não são traduzidos — são nomes próprios, iguais nos dois idiomas.
+
 ## Editar a seção "Sobre"
 
 - **Texto da bio:** `public/posts/about/main-pt.md` (body do markdown). Rode `npm run translate` para regenerar o EN.

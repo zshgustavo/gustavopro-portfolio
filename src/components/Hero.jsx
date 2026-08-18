@@ -8,9 +8,9 @@ import { useContent } from '../hooks/useContent'
  * offset -12px. Social tiles close the section.
  *
  * Everything in this section is content, editable without touching code:
- * /posts/hero/main-<lang>.md carries the name, role, description, stats and
- * the photo path — and the photo file itself lives next to them in
- * /posts/hero/. See GUIA_CONTEUDO.md.
+ * /posts/hero/main-<lang>.md carries the name, role, description, stats, the
+ * photo path and the social links — and the photo file itself lives next to
+ * them in /posts/hero/. See GUIA_CONTEUDO.md.
  */
 function Hero() {
   const { t, i18n } = useTranslation()
@@ -68,7 +68,7 @@ function Hero() {
         </div>
 
         <div className="hero-socials">
-          <SocialIcons />
+          <SocialIcons socials={content?.socials} />
         </div>
       </div>
     </header>

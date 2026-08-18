@@ -10,6 +10,21 @@ Mudanças aqui ficam pendentes até o próximo commit.
 
 ---
 
+## [2026-08-18] — Links sociais viram conteúdo
+
+### Alterado
+- A lista de redes sociais (URL, rótulo e ordem) sai do array hardcoded em `src/components/SocialIcons.jsx` e vai para `socials` em **`public/posts/hero/main-<lang>.md`**. Remover um item o esconde; reordenar a lista reordena a tela.
+- `SocialIcons` passa a receber a lista via prop. **Só a arte dos ícones fica no código** (`ICONS`): os paths SVG são strings enormes e imutáveis, que ninguém edita ao trocar um link.
+- A seção **Contato reaproveita a mesma lista** do Hero, em vez de manter uma segunda cópia das mesmas seis URLs. São os links do site, não de uma seção.
+
+### Adicionado
+- Aviso no console quando um `id` de `socials` não tem ícone registrado, apontando onde adicionar o path. Antes de existir a lista em markdown esse erro era impossível; agora um typo no conteúdo derrubaria o link **em silêncio**, que é justamente a classe de falha apontada no review.
+
+### Nota
+- Os `label` não entram na tradução: são nomes próprios (LinkedIn, GitHub, Last.fm…), idênticos nos dois idiomas. `TRANSLATABLE_LIST_FIELDS` é indexado pela chave de topo, então `socials[].label` não é afetado pela regra de `stats[].label`.
+
+---
+
 ## [2026-08-18] — Certificações vira seção de conteúdo
 
 Última seção que ainda vivia em código. Com ela, **todas as 7 seções do site** são editáveis por markdown em `public/posts/`.
