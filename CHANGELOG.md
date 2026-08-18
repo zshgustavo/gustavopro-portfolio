@@ -10,6 +10,21 @@ Mudanças aqui ficam pendentes até o próximo commit.
 
 ---
 
+## [2026-08-18] — Stack vira seção de conteúdo
+
+### Adicionado
+- **`public/posts/stack/`** — as 4 categorias da stack (Dados, Orquestração, Cloud, Práticas) saem do `src/i18n.js` e viram conteúdo editável em `main-pt.md` / `main-en.md`, com `title` e uma lista `groups` de `{ cat, items }`.
+- `groups: ['cat', 'items']` no `TRANSLATABLE_LIST_FIELDS` do `scripts/translate.mjs` — os 4 grupos são achatados como `frontmatter.groups.N.cat` / `.items` e traduzidos.
+- Regra nova no prompt de tradução: preservar o separador `·` e seu espaçamento em listas inline, para o modelo não trocar por vírgula.
+
+### Corrigido
+- **`<html lang>` não acompanhava o idioma no carregamento inicial.** O listener de `languageChanged` era registrado *depois* do `i18n.init()`, então perdia o evento emitido pelo próprio init: o documento ficava no `pt-BR` estático do `index.html` até o visitante trocar de idioma à mão. Agora o valor também é aplicado uma vez para o idioma resolvido no init. Regressão introduzida no redesign (`a0975b3`) e que passou despercebida porque a verificação anterior rodou *depois* de uma troca manual.
+
+### Alterado
+- `Skills.jsx` lê de `/posts/stack/main-<lang>.md`; `skills.title` no i18n vira apenas fallback.
+
+---
+
 ## [2026-08-18] — Hero vira uma seção de conteúdo
 
 ### Adicionado

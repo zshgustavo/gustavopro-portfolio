@@ -31,14 +31,9 @@ const resources = {
       about: {
         title: 'sobre mim'
       },
+      // Fallback only — as categorias vivem em /posts/stack/main-<lang>.md.
       skills: {
-        title: 'stack',
-        groups: [
-          { cat: 'Dados', items: 'SQL Avançado · Spark · DBT · BigQuery · Databricks' },
-          { cat: 'Orquestração', items: 'Apache Airflow · Astronomer · Data Factory' },
-          { cat: 'Cloud', items: 'Google Cloud · Azure · AWS · OCI · IBM Cloud' },
-          { cat: 'Práticas', items: 'DataOps · SRE · Data Mesh · Lakehouse · ML/AI' }
-        ]
+        title: 'stack'
       },
       projects: {
         title: 'projetos',
@@ -88,14 +83,9 @@ const resources = {
       about: {
         title: 'about me'
       },
+      // Fallback only — categories live in /posts/stack/main-<lang>.md.
       skills: {
-        title: 'stack',
-        groups: [
-          { cat: 'Data', items: 'Advanced SQL · Spark · DBT · BigQuery · Databricks' },
-          { cat: 'Orchestration', items: 'Apache Airflow · Astronomer · Data Factory' },
-          { cat: 'Cloud', items: 'Google Cloud · Azure · AWS · OCI · IBM Cloud' },
-          { cat: 'Practices', items: 'DataOps · SRE · Data Mesh · Lakehouse · ML/AI' }
-        ]
+        title: 'stack'
       },
       projects: {
         title: 'projects',
@@ -169,15 +159,25 @@ i18n
     }
   });
 
-// Remember the choice so a reload doesn't reset the visitor to Portuguese,
-// and keep <html lang> in sync for screen readers and search engines.
+/** Keep <html lang> honest for screen readers and search engines. */
+function applyDocumentLang(lng) {
+  document.documentElement.lang = lng === 'pt' ? 'pt-BR' : 'en';
+}
+
+// Remember the choice so a reload doesn't reset the visitor to Portuguese.
 i18n.on('languageChanged', (lng) => {
   try {
     window.localStorage.setItem(STORAGE_KEY, lng);
   } catch {
     // Storage unavailable — the language still applies for this session.
   }
-  document.documentElement.lang = lng === 'pt' ? 'pt-BR' : 'en';
+  applyDocumentLang(lng);
 });
+
+// Also apply it once for the language resolved during init: this listener is
+// registered after `.init()`, so it misses the `languageChanged` that init
+// emits. Without this the document keeps the static `pt-BR` from index.html
+// until the visitor switches languages by hand.
+applyDocumentLang(i18n.language);
 
 export default i18n;

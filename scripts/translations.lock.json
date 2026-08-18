@@ -65,6 +65,11 @@
       "sourceSha256": "fbd2eb9d8a37965a1aed65395eaa89fb757c4668a0fca34c26034dae40a47363",
       "model": "manual",
       "translatedAt": "2026-08-18T00:00:00.000Z"
+    },
+    "public/posts/stack/main-pt.md": {
+      "sourceSha256": "71970a17f7263162290db40b29a51a5ba3ce092513402626a5e379e170d8398c",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     }
   }
 }
