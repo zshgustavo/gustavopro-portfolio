@@ -18,11 +18,14 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "keywords": ["portfolio", "react", "markdown"],
+  "keywords": [
+    "portfolio",
+    "react",
+    "markdown"
+  ],
   "dependencies": {
     "i18next": "^25.7.2",
     "js-yaml": "^4.1.0",
-    "lucide-react": "^0.556.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-i18next": "^16.4.0",

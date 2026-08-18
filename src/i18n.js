@@ -5,93 +5,131 @@ import { initReactI18next } from 'react-i18next';
  * UI labels live here; page CONTENT lives in `public/posts/` as markdown, one
  * file per language. Two mechanisms on purpose: labels are code, prose is not.
  *
- * Only keys actually rendered by a component belong in here — orphaned keys
- * survive refactors invisibly and rot.
+ * The "Terminal" design renders section labels lowercase with a mono `##`
+ * prefix — the prefix lives in the JSX, lowercase comes from CSS, so the
+ * values here stay natural-cased where it matters.
+ *
+ * `hero.stats` and `skills.groups` are structured arrays consumed with
+ * `t(key, { returnObjects: true })`.
  */
 const resources = {
   pt: {
     translation: {
       nav: {
-        about: 'Sobre',
-        projects: 'Projetos',
-        events: 'Eventos',
-        contactMe: 'CONTATO'
+        about: 'sobre',
+        stack: 'stack',
+        projects: 'projetos',
+        certifications: 'certificações',
+        events: 'eventos',
+        contact: 'contato'
       },
       hero: {
-        greeting: 'Olá, eu sou',
-        role: 'Engenheiro de Dados e Cloud Sênior'
+        role: 'Engenheiro de Dados & Cloud Sênior',
+        stats: [
+          { value: '10+', label: 'anos' },
+          { value: '5', label: 'clouds' },
+          { value: 'GDG', label: 'organizer' }
+        ]
       },
       about: {
-        title: 'SOBRE MIM',
-        readMore: 'LEIA MAIS'
+        title: 'sobre mim'
+      },
+      skills: {
+        title: 'stack',
+        groups: [
+          { cat: 'Dados', items: 'SQL Avançado · Spark · DBT · BigQuery · Databricks' },
+          { cat: 'Orquestração', items: 'Apache Airflow · Astronomer · Data Factory' },
+          { cat: 'Cloud', items: 'Google Cloud · Azure · AWS · OCI · IBM Cloud' },
+          { cat: 'Práticas', items: 'DataOps · SRE · Data Mesh · Lakehouse · ML/AI' }
+        ]
       },
       projects: {
-        title: 'PROJETOS',
+        title: 'projetos',
         subtitle: 'Alguns dos projetos em que participei',
-        viewCode: 'Ver Código',
-        viewSite: 'Ver Site'
+        viewCode: 'ver código',
+        viewSite: 'ver site'
+      },
+      certs: {
+        title: 'certificações',
+        subtitle: 'Especialista multi-cloud certificado'
       },
       events: {
-        title: 'EVENTOS',
+        title: 'eventos',
         subtitle: 'Eventos que coordenei ou palestrei',
-        viewMore: 'Ver mais',
-        coordinated: 'Coordenado',
-        speaker: 'Palestrante'
+        viewPhotos: 'ver fotos',
+        coordinated: 'coordenado',
+        speaker: 'palestrante'
       },
       contact: {
-        title: 'CONTATO',
-        subtitle: 'Entre em contato comigo',
-        explore: 'EXPLORE'
+        command: '$ contato --iniciar',
+        title: 'Vamos construir algo com dados'
       },
       footer: {
-        backToTop: 'VOLTAR AO TOPO',
-        rights: 'Todos os direitos reservados.'
+        rights: 'todos os direitos reservados',
+        backToTop: 'voltar ao topo'
       },
       common: {
-        loading: 'Carregando...'
+        loading: 'carregando…'
       }
     }
   },
   en: {
     translation: {
       nav: {
-        about: 'About',
-        projects: 'Projects',
-        events: 'Events',
-        contactMe: 'CONTACT ME'
+        about: 'about',
+        stack: 'stack',
+        projects: 'projects',
+        certifications: 'certifications',
+        events: 'events',
+        contact: 'contact'
       },
       hero: {
-        greeting: 'Hi, I am',
-        role: 'Senior Data & Cloud Engineer'
+        role: 'Senior Data & Cloud Engineer',
+        stats: [
+          { value: '10+', label: 'years' },
+          { value: '5', label: 'clouds' },
+          { value: 'GDG', label: 'organizer' }
+        ]
       },
       about: {
-        title: 'ABOUT ME',
-        readMore: 'READ MORE'
+        title: 'about me'
+      },
+      skills: {
+        title: 'stack',
+        groups: [
+          { cat: 'Data', items: 'Advanced SQL · Spark · DBT · BigQuery · Databricks' },
+          { cat: 'Orchestration', items: 'Apache Airflow · Astronomer · Data Factory' },
+          { cat: 'Cloud', items: 'Google Cloud · Azure · AWS · OCI · IBM Cloud' },
+          { cat: 'Practices', items: 'DataOps · SRE · Data Mesh · Lakehouse · ML/AI' }
+        ]
       },
       projects: {
-        title: 'PROJECTS',
+        title: 'projects',
         subtitle: 'Some of the projects I participated in',
-        viewCode: 'View Code',
-        viewSite: 'View Site'
+        viewCode: 'view code',
+        viewSite: 'view site'
+      },
+      certs: {
+        title: 'certifications',
+        subtitle: 'Certified multi-cloud specialist'
       },
       events: {
-        title: 'EVENTS',
+        title: 'events',
         subtitle: 'Events I coordinated or spoke at',
-        viewMore: 'See more',
-        coordinated: 'Coordinated',
-        speaker: 'Speaker'
+        viewPhotos: 'view photos',
+        coordinated: 'coordinated',
+        speaker: 'speaker'
       },
       contact: {
-        title: 'CONTACT',
-        subtitle: 'Get in touch with me',
-        explore: 'EXPLORE'
+        command: '$ contact --start',
+        title: "Let's build something with data"
       },
       footer: {
-        backToTop: 'BACK TO TOP',
-        rights: 'All rights reserved.'
+        rights: 'all rights reserved',
+        backToTop: 'back to top'
       },
       common: {
-        loading: 'Loading...'
+        loading: 'loading…'
       }
     }
   }
@@ -137,13 +175,15 @@ i18n
     }
   });
 
-// Remember the choice so a reload doesn't reset the visitor to Portuguese.
+// Remember the choice so a reload doesn't reset the visitor to Portuguese,
+// and keep <html lang> in sync for screen readers and search engines.
 i18n.on('languageChanged', (lng) => {
   try {
     window.localStorage.setItem(STORAGE_KEY, lng);
   } catch {
     // Storage unavailable — the language still applies for this session.
   }
+  document.documentElement.lang = lng === 'pt' ? 'pt-BR' : 'en';
 });
 
 export default i18n;

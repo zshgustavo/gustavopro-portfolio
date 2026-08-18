@@ -10,6 +10,38 @@ Mudanças aqui ficam pendentes até o próximo commit.
 
 ---
 
+## [2026-08-18] — Redesign completo: direção "Terminal"
+
+Layout e design refeitos a partir da proposta criada no Claude Design (Brand Guide + telas), na direção "Terminal": estética de engenharia, cantos retos, bordas de 1px (sem raio e sem sombra), rótulos em monoespaçada e seções alternando fundo escuro e claro.
+
+### Adicionado
+- **Design system novo** em `src/styles/index.css`: paleta escura (`#0A0E12`/`#0E1319`/accent `#7DC6FF`) e clara (`#E9EDF2`/`#FFFFFF`/accent `#17669F`), tipografia **Space Grotesk** (display/texto) + **JetBrains Mono** (rótulos, nav, tags, datas), container 1240px.
+- **Seção Stack** (`src/components/Skills.jsx`) — grade 2×2 de células "coladas" (gap 1px): Dados, Orquestração, Cloud, Práticas. Conteúdo em `i18n.js` (`skills.groups`).
+- **Seção Certificações** (`src/components/Certifications.jsx`) — 6 células nomeadas (Google Cloud, Azure, AWS, OCI, IBM, Astronomer) com slot reservado para os badges oficiais; até lá, renderiza a sigla em mono.
+- Stats do Hero (`10+ anos · 5 clouds · GDG organizer`) via `hero.stats` no i18n.
+- `description` no frontmatter do hero (parágrafo sob o nome).
+- `<html lang>` agora acompanha o idioma ativo (pt-BR / en).
+
+### Alterado
+- **Nav**: `~/gustavo-santos` como marca, links mono com prefixo `./`, contato em accent, PT | EN com `aria-pressed`; sticky com borda inferior; hamburger abaixo de 1080px.
+- **Hero**: eyebrow `// cargo` em mono, nome empilhado a 80px, foto com moldura accent de 1px a -12px, tiles sociais quadrados.
+- **Sobre**: rótulo `## sobre mim`, uma imagem + bio completa em markdown (o colágio de certificações saiu — substituído pela seção própria).
+- **Projetos**: 2 colunas, thumbnail 2:1, tags em linha mono (`edtech · fluência · idiomas` — curadas na proposta), links de texto `ver código →` / `ver site →`. Descrições encurtadas conforme o design.
+- **Eventos**: 3 colunas, thumbnail 16:10 com badge `palestrante`/`coordenado` sobreposto, data curta (`mai 2026`), link `ver fotos →`; ordem do `index.json` agora é cronológica reversa.
+- **Contato**: rótulo `$ contato --iniciar`, título "Vamos construir algo com dados", corpo em markdown e tiles sociais. Ficou **escuro** (o mock o tinha claro após a seção de depoimentos, que não foi implementada — sem ela, dois fundos claros colariam; ver nota em `Contact.jsx`).
+- **Footer**: linha única em mono. **BackToTop**: quadrado, canto inferior direito.
+- Ícones sociais agora usam os **logos oficiais preenchidos** (SVG `currentColor`), em tiles de 1px de borda.
+
+### Removido
+- **Badge do LinkedIn** e a injeção do script `platform.linkedin.com` — o design substitui por contato via redes.
+- **`lucide-react`** — nenhum componente restante usa a biblioteca (ícones agora são SVG próprios); build caiu de 1874 para 215 módulos.
+- Fontes Poppins e Playfair Display.
+
+### Não implementado (decisão)
+- **Seção Depoimentos** do mock — continha apenas texto placeholder ("recomendação selecionada do seu LinkedIn aparece aqui"); entra quando houver recomendações reais selecionadas.
+
+---
+
 ## [2026-08-17] — Review técnico e saneamento
 
 ### Adicionado

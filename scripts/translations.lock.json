@@ -2,9 +2,9 @@
   "version": 1,
   "entries": {
     "public/posts/about/hero-pt.md": {
-      "sourceSha256": "ba953fa85e0e60baf72d1295760bbac564b178aa06127c57e537fc27efd875b7",
-      "model": "seed",
-      "translatedAt": "2026-08-17T00:00:00.000Z"
+      "sourceSha256": "c11b3c30ab9e98b889764d2649104206899a00f5e0b3c5b2b1a71fb32bb6cdff",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     },
     "public/posts/about/main-pt.md": {
       "sourceSha256": "b231550aeae1488555a9df19e9fedc1a5980bd79431a57f32d64bacd42f45553",
@@ -12,9 +12,9 @@
       "translatedAt": "2026-08-17T00:00:00.000Z"
     },
     "public/posts/contact/main-pt.md": {
-      "sourceSha256": "663bba2db7ff9a354e181ed29f46890425ba310f8e002245a0e751515502b3d6",
-      "model": "seed",
-      "translatedAt": "2026-08-17T00:00:00.000Z"
+      "sourceSha256": "fa565d1ef6926f568cd0d28645ef5399aa650ebb03796cd4ad7637274172176d",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     },
     "public/posts/events/event-1-pt.md": {
       "sourceSha256": "f5c26b72c1f780c03b7b419e466bb12815cc00e042cd94a70c7e5b7d2b7eb0b2",
@@ -47,24 +47,24 @@
       "translatedAt": "2026-08-17T00:00:00.000Z"
     },
     "public/posts/projects/project-1-pt.md": {
-      "sourceSha256": "bce53699b79c674760893462226cee38a754f4e5fffbafa1300819e9b4da761b",
-      "model": "seed",
-      "translatedAt": "2026-08-17T00:00:00.000Z"
+      "sourceSha256": "ffb8b0e94b58886c9de1e033b88fd4c8e0cc2375ca3896ecc706446ce9422034",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     },
     "public/posts/projects/project-2-pt.md": {
-      "sourceSha256": "ea0846d8314d9da10ec1de1b0f61f288ba303da7e83f9628f51f6f4c3466cebe",
-      "model": "seed",
-      "translatedAt": "2026-08-17T00:00:00.000Z"
+      "sourceSha256": "1d3594e80d33d48c24a5550e57e289b46a422499a6fdf33109447fceb9f6c9c4",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     },
     "public/posts/projects/project-3-pt.md": {
-      "sourceSha256": "66e5d47778719064e33dad92b3502bc1dd4c3e5ebf62ba8e83b2e941216040e6",
-      "model": "seed",
-      "translatedAt": "2026-08-17T00:00:00.000Z"
+      "sourceSha256": "9d7d8b3fe1f9ce07389988adfb0b756ac0103f513444e6a3c344a6538de6d50c",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     },
     "public/posts/projects/project-4-pt.md": {
-      "sourceSha256": "c692e6b9f850f2402f3fd62439da03b2aa3a5ade736ad333a1daedf1e70a9bf4",
-      "model": "seed",
-      "translatedAt": "2026-08-17T00:00:00.000Z"
+      "sourceSha256": "fbd2eb9d8a37965a1aed65395eaa89fb757c4668a0fca34c26034dae40a47363",
+      "model": "manual",
+      "translatedAt": "2026-08-18T00:00:00.000Z"
     }
   }
 }

@@ -1,9 +1,5 @@
 ---
-title: CONTACT
-subtitle: EXPLORE
-email: contato@gustavosantospro.com
+title: Let's build something with data
 ---
 
-Do you have a project in mind or would you like to talk about technology? Reach out through the LinkedIn profile on the side or any of my social links.
-
-I will respond as soon as possible!
+Do you have a project in mind or would you like to talk about technology? Reach out through my social links. I will respond as soon as possible!

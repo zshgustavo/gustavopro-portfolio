@@ -11,10 +11,9 @@ Versão em produção: [gustavosantospro.com - portfolio](https://gustavosantosp
 - [Vite 8](https://vitejs.dev) — build tool e dev server
 - [i18next](https://www.i18next.com) + [react-i18next](https://react.i18next.com) — internacionalização (PT/EN)
 - [react-markdown](https://github.com/remarkjs/react-markdown) — renderização do conteúdo dos posts
-- [Lucide Icons](https://lucide.dev) — biblioteca de ícones
-- CSS puro com variáveis customizadas
+- CSS puro com variáveis customizadas — design "Terminal" (Space Grotesk + JetBrains Mono, seções alternando escuro/claro, bordas 1px)
 
-Página única com navegação por scroll suave — sem roteador.
+Página única com navegação por scroll suave — sem roteador. O design system está documentado no Brand Guide criado com o [Claude Design](https://claude.ai).
 
 **Conteúdo & infraestrutura**
 - Markdown com frontmatter YAML como CMS leve (`public/posts/`)

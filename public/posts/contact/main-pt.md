@@ -1,9 +1,5 @@
 ---
-title: CONTATO
-subtitle: EXPLORE
-email: contato@gustavosantospro.com
+title: Vamos construir algo com dados
 ---
 
-Tem algum projeto em mente ou gostaria de conversar sobre tecnologia? Me chame pelo LinkedIn ao lado ou por qualquer uma das redes sociais.
-
-Responderei o mais breve possível!
+Tem algum projeto em mente ou gostaria de conversar sobre tecnologia? Entre em contato pelas redes sociais. Responderei o mais breve possível!

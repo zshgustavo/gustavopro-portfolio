@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ArrowUp } from 'lucide-react'
 
 /**
- * BackToTop — floating button shown after the user scrolls past a threshold.
- *
- * Anchored to the top-left, below the fixed navbar. Smoothly scrolls the page
- * back to the top when clicked. Fades in/out based on scroll position.
+ * BackToTop — floating square button (1px border, no radius, per the system)
+ * shown after the user scrolls past a threshold. Bottom-right.
  */
 function BackToTop({ threshold = 400 }) {
   const { t } = useTranslation()
@@ -27,11 +24,11 @@ function BackToTop({ threshold = 400 }) {
     <button
       type="button"
       onClick={scrollToTop}
-      className={`back-to-top-floating ${visible ? 'is-visible' : ''}`}
+      className={`back-to-top ${visible ? 'is-visible' : ''}`}
       aria-label={t('footer.backToTop')}
       title={t('footer.backToTop')}
     >
-      <ArrowUp size={20} />
+      ↑
     </button>
   )
 }

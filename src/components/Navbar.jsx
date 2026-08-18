@@ -1,93 +1,57 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Menu, X, Globe } from 'lucide-react'
 
 /**
- * Navbar Component
- * 
- * Features:
- * - Fixed navigation that changes style on scroll
- * - Responsive mobile menu
- * - Language switcher (PT/EN)
- * - Smooth scroll navigation to sections
+ * Nav — Terminal direction: `~/gustavo-santos` brand, mono links with a `./`
+ * prefix, contact link in accent, PT | EN switcher. Sticky with a 1px bottom
+ * border; collapses into a hamburger below 1080px.
  */
+
+const LINKS = [
+  { id: 'about', key: 'nav.about' },
+  { id: 'skills', key: 'nav.stack' },
+  { id: 'projects', key: 'nav.projects' },
+  { id: 'certifications', key: 'nav.certifications' },
+  { id: 'events', key: 'nav.events' },
+  { id: 'contact', key: 'nav.contact', cta: true },
+]
+
 function Navbar({ currentLang, onChangeLang }) {
   const { t } = useTranslation()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  // Handle scroll to add background to navbar
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Smooth scroll to section
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-    setIsMobileMenuOpen(false)
+  const scrollToSection = (e, sectionId) => {
+    e.preventDefault()
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+    setIsMenuOpen(false)
   }
 
   return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      {/* Logo - visible only after scroll or on mobile */}
-      <div className="navbar-logo" style={{ opacity: isScrolled ? 1 : 0 }}>
-        <svg viewBox="0 0 50 50" fill="currentColor" style={{ color: '#fff' }}>
-          <text x="3" y="36" fontSize="26" fontWeight="bold" fontFamily="Poppins">GS</text>
-        </svg>
-      </div>
+    <nav className="nav">
+      <span className="nav-brand">~/gustavo-santos</span>
 
-      {/* Desktop Navigation Menu */}
-      <div className={`navbar-menu ${isMobileMenuOpen ? 'active' : ''}`}>
-        <a 
-          href="#about" 
-          className="navbar-link"
-          onClick={(e) => { e.preventDefault(); scrollToSection('about') }}
-        >
-          {t('nav.about')}
-        </a>
-        <a 
-          href="#projects" 
-          className="navbar-link"
-          onClick={(e) => { e.preventDefault(); scrollToSection('projects') }}
-        >
-          {t('nav.projects')}
-        </a>
-        <a 
-          href="#events" 
-          className="navbar-link"
-          onClick={(e) => { e.preventDefault(); scrollToSection('events') }}
-        >
-          {t('nav.events')}
-        </a>
-        
-        {/* Contact CTA Button */}
-        <a 
-          href="#contact" 
-          className="navbar-cta"
-          onClick={(e) => { e.preventDefault(); scrollToSection('contact') }}
-        >
-          {t('nav.contactMe')}
-        </a>
+      <div className={`nav-menu ${isMenuOpen ? 'is-open' : ''}`}>
+        {LINKS.map(({ id, key, cta }) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            className={`nav-link ${cta ? 'nav-link--cta' : ''}`}
+            onClick={(e) => scrollToSection(e, id)}
+          >
+            ./{t(key)}
+          </a>
+        ))}
 
-        {/* Language Switcher */}
-        <div className="language-switcher">
-          <Globe size={16} style={{ color: 'rgba(255,255,255,0.6)' }} />
-          <button 
-            className={`lang-btn ${currentLang === 'pt' ? 'active' : ''}`}
+        <div className="nav-lang">
+          <button
+            aria-pressed={currentLang === 'pt'}
             onClick={() => onChangeLang('pt')}
           >
             PT
           </button>
-          <button 
-            className={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}
+          <span>|</span>
+          <button
+            aria-pressed={currentLang === 'en'}
             onClick={() => onChangeLang('en')}
           >
             EN
@@ -95,21 +59,15 @@ function Navbar({ currentLang, onChangeLang }) {
         </div>
       </div>
 
-      {/* Mobile Menu Toggle */}
-      <button 
-        className="menu-toggle"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      <button
+        className={`nav-toggle ${isMenuOpen ? 'is-open' : ''}`}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Toggle menu"
+        aria-expanded={isMenuOpen}
       >
-        {isMobileMenuOpen ? (
-          <X size={24} color="#fff" />
-        ) : (
-          <>
-            <span></span>
-            <span></span>
-            <span></span>
-          </>
-        )}
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </nav>
   )
