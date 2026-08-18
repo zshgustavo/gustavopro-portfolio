@@ -10,6 +10,22 @@ Mudanças aqui ficam pendentes até o próximo commit.
 
 ---
 
+## [2026-08-18] — Hero vira uma seção de conteúdo
+
+### Adicionado
+- **`public/posts/hero/`** — o topo do site vira uma seção autocontida: `main-pt.md` / `main-en.md` com `name`, `role`, `description`, `photo` e `stats`, e a **foto (`profile.jpg`) na mesma pasta**. Editar o Hero deixa de exigir mexer em código.
+- Suporte a **prose dentro de arrays** no `scripts/translate.mjs` (`TRANSLATABLE_LIST_FIELDS`): campos como `stats[].label` são achatados como `frontmatter.stats.0.label` e traduzidos. Sem isso, editar "anos" no PT regeneraria o EN com o texto em português — regressão silenciosa.
+
+### Alterado
+- `Hero.jsx` lê tudo de `/posts/hero/main-<lang>.md`, incluindo o caminho da foto (antes hardcoded em `/images/profile.jpg`) e as stats (antes em `i18n.js`).
+- `hero.role` no i18n vira apenas fallback.
+
+### Removido
+- `public/posts/about/hero-pt.md` e `hero-en.md` — substituídos por `posts/hero/main-*.md`.
+- `public/images/profile.jpg` — movido para `public/posts/hero/profile.jpg` (git preservou o histórico como rename).
+
+---
+
 ## [2026-08-18] — Redesign completo: direção "Terminal"
 
 Layout e design refeitos a partir da proposta criada no Claude Design (Brand Guide + telas), na direção "Terminal": estética de engenharia, cantos retos, bordas de 1px (sem raio e sem sombra), rótulos em monoespaçada e seções alternando fundo escuro e claro.

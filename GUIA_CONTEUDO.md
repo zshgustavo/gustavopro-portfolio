@@ -10,9 +10,11 @@ Como adicionar, editar e organizar conteúdo deste portfólio (eventos, projetos
 
 ```
 public/posts/
+├── hero/                 # Seção do topo — textos E a foto, no mesmo lugar
+│   ├── main-pt.md        # Nome, cargo, descrição e stats
+│   ├── main-en.md        # Gerado automaticamente
+│   └── profile.jpg       # Foto do Hero
 ├── about/
-│   ├── hero-pt.md        # Nome e cargo (linha superior do Hero)
-│   ├── hero-en.md        # Gerado automaticamente
 │   ├── main-pt.md        # Bio completa da seção "Sobre"
 │   └── main-en.md        # Gerado automaticamente
 ├── contact/
@@ -107,10 +109,34 @@ Depois adiciona ao `public/posts/projects/index.json` e roda `npm run translate`
 
 ---
 
+## Editar o Hero (topo da página)
+
+Tudo do Hero vive em `public/posts/hero/` — os textos e a própria foto:
+
+```yaml
+---
+name: Gustavo Santos                     # quebra por palavra no título
+role: Engenheiro de Dados & Cloud Sênior # vira o eyebrow "// …"
+description: Data Architect e Google Cloud Specialist. 10 anos…
+photo: /posts/hero/profile.jpg           # caminho servido pelo Vite
+stats:
+  - value: 10+
+    label: anos
+  - value: '5'
+    label: clouds
+  - value: GDG
+    label: organizer
+---
+```
+
+- **Trocar a foto:** substitua `public/posts/hero/profile.jpg` (ou aponte `photo` para outro arquivo/URL do Cloudinary).
+- **Stats:** quantos você quiser — o componente renderiza a lista inteira. `value` em accent, `label` embaixo em cinza.
+- `npm run translate` cuida de `role`, `description` e dos `label` das stats. `name`, `photo` e `value` passam intactos.
+
 ## Editar a seção "Sobre"
 
 - **Texto da bio:** `public/posts/about/main-pt.md` (body do markdown). Rode `npm run translate` para regenerar o EN.
-- **Nome, cargo e descrição do Hero:** `public/posts/about/hero-pt.md`. Frontmatter `name`, `role` (vira o eyebrow `// …`) e `description` (parágrafo abaixo do nome).
+- **Imagem:** `public/images/about.png`.
 - **Stack e Certificações:** são seções de UI, não de conteúdo — os grupos da stack ficam em `src/i18n.js` (`skills.groups`) e a lista de certificações em `src/components/Certifications.jsx` (campo `img` reservado para os badges oficiais).
 - **Imagem da bio:** substitua `public/images/about.png` localmente (ou troque para uma URL do Cloudinary se preferir).
 
