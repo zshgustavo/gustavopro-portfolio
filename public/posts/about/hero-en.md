@@ -1,4 +1,5 @@
 ---
 name: Gustavo Santos
-role: Senior Data Engineer, Data Architect, Google Cloud Specialist
+role: Senior Data & Cloud Engineer
+description: Data Architect and Google Cloud Specialist. 10 years building data platforms across multiple clouds for global teams.
 ---

@@ -110,7 +110,8 @@ Depois adiciona ao `public/posts/projects/index.json` e roda `npm run translate`
 ## Editar a seção "Sobre"
 
 - **Texto da bio:** `public/posts/about/main-pt.md` (body do markdown). Rode `npm run translate` para regenerar o EN.
-- **Nome e cargo do Hero:** `public/posts/about/hero-pt.md`. Frontmatter `name` e `role`.
+- **Nome, cargo e descrição do Hero:** `public/posts/about/hero-pt.md`. Frontmatter `name`, `role` (vira o eyebrow `// …`) e `description` (parágrafo abaixo do nome).
+- **Stack e Certificações:** são seções de UI, não de conteúdo — os grupos da stack ficam em `src/i18n.js` (`skills.groups`) e a lista de certificações em `src/components/Certifications.jsx` (campo `img` reservado para os badges oficiais).
 - **Imagem da bio:** substitua `public/images/about.png` localmente (ou troque para uma URL do Cloudinary se preferir).
 
 ---
@@ -120,7 +121,7 @@ Depois adiciona ao `public/posts/projects/index.json` e roda `npm run translate`
 | Campo | Formato | Exemplo |
 |---|---|---|
 | Slug | kebab-case, sem acento | `gdg-summit-lima-2025` |
-| Data de evento | `YYYY-MM` | `2025-08` (renderiza "agosto de 2025") |
+| Data de evento | `YYYY-MM` | `2025-08` (renderiza "ago 2025" / "Aug 2025") |
 | `type` de evento | `speaker` ou `coordinated` | controla o badge do card |
 | Tags de projeto | array inline | `[ia, cloud, python]` |
 | URLs do Cloudinary | sempre com `q_auto,f_auto` | entrega WebP/AVIF automaticamente |

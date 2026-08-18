@@ -4,12 +4,19 @@ import { useTranslation } from 'react-i18next'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
+import Skills from './components/Skills'
 import Projects from './components/Projects'
+import Certifications from './components/Certifications'
 import Events from './components/Events'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import BackToTop from './components/BackToTop'
 
+/**
+ * Section order follows the approved Terminal design, alternating dark/light:
+ * hero (dark) → sobre (light) → stack (dark) → projetos (light) →
+ * certificações (dark) → eventos (light) → contato (dark) → footer.
+ */
 function App() {
   const { i18n } = useTranslation()
 
@@ -20,25 +27,23 @@ function App() {
 
   return (
     <div className="app">
-      {/* Navigation with language switcher */}
       <Navbar
         currentLang={i18n.language}
         onChangeLang={changeLanguage}
       />
 
-      {/* Main Content Sections */}
       <main>
         <Hero />
         <About />
+        <Skills />
         <Projects />
+        <Certifications />
         <Events />
         <Contact />
       </main>
 
-      {/* Footer with social icons */}
       <Footer />
 
-      {/* Floating back-to-top button, top-left, shown after scroll */}
       <BackToTop />
     </div>
   )

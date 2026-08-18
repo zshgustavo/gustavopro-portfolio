@@ -1,59 +1,29 @@
 import { useTranslation } from 'react-i18next'
 import { useContentList } from '../hooks/useContent'
-import { ExternalLink, Github } from 'lucide-react'
 
 /**
- * Projects Section Component
- * 
- * Displays a grid of project cards with thumbnails, titles, and links.
- * Content is loaded dynamically from markdown files in /posts/projects/
- * 
- * Content Structure:
- * - /posts/projects/index.json: Lists all project files to load
- * - /posts/projects/project-name.md: Individual project details
- * 
- * Each project markdown file should have:
- * ---
- * title: Project Name
- * description: Short description
- * thumbnail: /images/projects/project.png
- * codeUrl: https://github.com/...
- * siteUrl: https://...
- * featured: true
- * tags: [react, javascript]
- * ---
- * Optional longer description in markdown body.
+ * Projetos — light section: 2-column cards, 2:1 thumbnail, mono tag line,
+ * text action links (`ver código →` / `ver site →`).
+ *
+ * Content: /posts/projects/index.json + project-N-<lang>.md.
  */
 function Projects() {
   const { t, i18n } = useTranslation()
 
-  // Load projects list (per current language). Every project listed in
-  // posts/projects/index.json is shown — the `featured` flag in frontmatter
-  // stays available for future use, e.g. a badge or custom sorting.
   const { items: projects, isLoading } = useContentList('projects', i18n.language)
 
   return (
-    <section className="projects-section section" id="projects">
+    <section className="sec--light" id="projects">
       <div className="container">
-        {/* Section Header */}
-        <div className="section-header">
-          <h2>{t('projects.title')}</h2>
-          <p>{t('projects.subtitle')}</p>
-        </div>
+        <p className="sec-label">## {t('projects.title')}</p>
+        <p className="sec-subtitle">{t('projects.subtitle')}</p>
 
-        {/* Projects Grid */}
         {isLoading ? (
-          <div className="flex-center" style={{ padding: '4rem' }}>
-            <div className="loading-spinner"></div>
-          </div>
+          <p className="loading">$ {t('common.loading')}</p>
         ) : (
           <div className="projects-grid">
             {projects.map((project, index) => (
-              <ProjectCard
-                key={project.id || index}
-                project={project}
-                t={t}
-              />
+              <ProjectCard key={project.id || index} project={project} t={t} />
             ))}
           </div>
         )}
@@ -62,79 +32,58 @@ function Projects() {
   )
 }
 
-/**
- * Individual Project Card Component
- * 
- * Renders a single project with thumbnail, title, description, and action links.
- */
 function ProjectCard({ project, t }) {
   const { title, description, thumbnail, codeUrl, siteUrl, tags } = project
+  const mainUrl = siteUrl || codeUrl
 
   return (
     <article className="project-card">
-      {/* Thumbnail */}
-      <div className="project-thumbnail">
-        <img 
-          src={thumbnail || '/images/projects/placeholder.png'}
+      {thumbnail && (
+        <img
+          src={thumbnail}
           alt={title}
           onError={(e) => {
-            // Fallback to placeholder
-            e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><rect fill="%23041145" width="400" height="250"/><text x="50%" y="50%" fill="white" text-anchor="middle" font-family="sans-serif" font-size="20">📁 Projeto</text></svg>'
+            e.target.style.display = 'none'
           }}
         />
-      </div>
+      )}
 
-      {/* Project Info */}
-      <div className="project-info">
+      <div className="project-body">
+        {Array.isArray(tags) && tags.length > 0 && (
+          <p className="project-tags">{tags.join(' · ')}</p>
+        )}
+
         <h3>
-          {(siteUrl || codeUrl) ? (
-            <a
-              href={siteUrl || codeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-title-link"
-            >
+          {mainUrl ? (
+            <a href={mainUrl} target="_blank" rel="noopener noreferrer">
               {title}
             </a>
           ) : (
             title
           )}
         </h3>
-        <p>{description}</p>
 
-        {/* Tags */}
-        {tags && tags.length > 0 && (
-          <div className="project-tags">
-            {tags.map((tag, i) => (
-              <span key={i} className="project-tag">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        {description && <p className="project-desc">{description}</p>}
 
-        {/* Action Links */}
         <div className="project-links">
           {codeUrl && (
-            <a 
-              href={codeUrl} 
-              target="_blank" 
+            <a
+              href={codeUrl}
+              target="_blank"
               rel="noopener noreferrer"
-              className="project-link"
+              className="action-link"
             >
-              <Github size={14} />
-              {t('projects.viewCode')}
+              {t('projects.viewCode')} →
             </a>
           )}
           {siteUrl && (
-            <a 
-              href={siteUrl} 
-              target="_blank" 
+            <a
+              href={siteUrl}
+              target="_blank"
               rel="noopener noreferrer"
-              className="project-link"
+              className="action-link"
             >
-              <ExternalLink size={14} />
-              {t('projects.viewSite')}
+              {t('projects.viewSite')} →
             </a>
           )}
         </div>

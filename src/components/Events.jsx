@@ -1,69 +1,40 @@
 import { useTranslation } from 'react-i18next'
 import { useContentList } from '../hooks/useContent'
-import { Calendar, MapPin, ExternalLink } from 'lucide-react'
 
 /**
- * Events Section Component
+ * Eventos — light section: 3-column cards, 16:10 thumbnail with the type
+ * badge overlaid top-right, `date · location` in mono, `ver fotos →` link.
  *
- * Displays events coordinated or spoken at. Each card has a short summary
- * and (optionally) a "See more" button that opens an external photo album
- * (e.g. Cloudinary collection, Google Photos, etc.) provided via the
- * `albumUrl` frontmatter field.
- *
- * Content Structure:
- * - /posts/events/index.json: ordered list of event base names
- * - /posts/events/<base>-<lang>.md: localized event details
- *
- * Frontmatter shape:
- *   ---
- *   id: 1
- *   title: GDG Summit Lima 2025
- *   description: Short summary in one or two sentences.
- *   date: 2025-08             # YYYY-MM (rendered as "August 2025" / "agosto de 2025")
- *   location: Lima, Peru
- *   type: speaker | coordinated
- *   thumbnail: https://res.cloudinary.com/.../cover.jpg
- *   albumUrl: https://...      # optional — renders the "See more" button
- *   ---
+ * Content: /posts/events/index.json + event-N-<lang>.md.
  */
 function Events() {
   const { t, i18n } = useTranslation()
 
   const { items: events, isLoading } = useContentList('events', i18n.language)
 
-  // Format date as "month year" (no day) — events are typically scoped to a month.
-  // Parse YYYY-MM explicitly in LOCAL time. Using `new Date('2025-08')` would
-  // be interpreted as UTC midnight and shift to the previous month in
-  // negative-offset timezones (e.g. America/Sao_Paulo).
+  // Short "mon year" form per the design ("mai 2026" / "May 2026").
+  // Parse YYYY-MM explicitly in LOCAL time — `new Date('2025-08')` would be
+  // read as UTC midnight and shift a month in negative-offset timezones.
   const formatDate = (dateString) => {
     if (!dateString) return ''
     const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(dateString)
     const date = match
-      ? new Date(
-          Number(match[1]),
-          Number(match[2]) - 1,
-          Number(match[3] || 1),
-        )
+      ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3] || 1))
       : new Date(dateString)
     if (Number.isNaN(date.getTime())) return ''
-    return date.toLocaleDateString(
-      i18n.language === 'pt' ? 'pt-BR' : 'en-US',
-      { year: 'numeric', month: 'long' },
-    )
+    const locale = i18n.language === 'pt' ? 'pt-BR' : 'en-US'
+    const month = date.toLocaleDateString(locale, { month: 'short' }).replace('.', '')
+    return `${month} ${date.getFullYear()}`
   }
 
   return (
-    <section className="events-section section" id="events">
+    <section className="sec--light" id="events">
       <div className="container">
-        <div className="section-header">
-          <h2>{t('events.title')}</h2>
-          <p>{t('events.subtitle')}</p>
-        </div>
+        <p className="sec-label">## {t('events.title')}</p>
+        <p className="sec-subtitle">{t('events.subtitle')}</p>
 
         {isLoading ? (
-          <div className="flex-center" style={{ padding: '4rem' }}>
-            <div className="loading-spinner"></div>
-          </div>
+          <p className="loading">$ {t('common.loading')}</p>
         ) : (
           <div className="events-grid">
             {events.map((event, index) => (
@@ -82,58 +53,42 @@ function Events() {
 }
 
 function EventCard({ event, t, formatDate }) {
-  const {
-    title,
-    description,
-    date,
-    location,
-    type,
-    thumbnail,
-    albumUrl,
-  } = event
+  const { title, description, date, location, type, thumbnail, albumUrl } = event
 
   return (
     <article className="event-card">
-      <div className="event-thumbnail">
-        <img
-          src={thumbnail || '/images/events/placeholder.jpg'}
-          alt={title}
-          onError={(e) => {
-            e.target.src =
-              'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><rect fill="%23041145" width="400" height="250"/><text x="50%" y="50%" fill="white" text-anchor="middle" font-family="sans-serif" font-size="20">🎤 Evento</text></svg>'
-          }}
-        />
+      <div className="event-thumb">
+        {thumbnail && (
+          <img
+            src={thumbnail}
+            alt={title}
+            onError={(e) => {
+              e.target.style.display = 'none'
+            }}
+          />
+        )}
         <span className="event-badge">
           {type === 'coordinated' ? t('events.coordinated') : t('events.speaker')}
         </span>
       </div>
 
-      <div className="event-info">
-        <div className="event-date">
-          <span className="event-meta">
-            <Calendar size={14} />
-            {formatDate(date)}
-          </span>
-          {location && (
-            <span className="event-meta">
-              <MapPin size={14} />
-              {location}
-            </span>
-          )}
-        </div>
+      <div className="event-body">
+        <p className="event-meta">
+          {formatDate(date)}
+          {location ? ` · ${location}` : ''}
+        </p>
 
         <h3>{title}</h3>
-        {description && <p>{description}</p>}
+        {description && <p className="event-desc">{description}</p>}
 
         {albumUrl && (
           <a
             href={albumUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="event-album-link"
+            className="action-link"
           >
-            {t('events.viewMore')}
-            <ExternalLink size={14} />
+            {t('events.viewPhotos')} →
           </a>
         )}
       </div>
