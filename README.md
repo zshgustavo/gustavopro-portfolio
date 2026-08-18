@@ -8,28 +8,39 @@ Versão em produção: [gustavosantospro.com - portfolio](https://gustavosantosp
 
 **Front-end**
 - [React 19](https://react.dev) — biblioteca de UI
-- [Vite 7](https://vitejs.dev) — build tool e dev server
-- [React Router](https://reactrouter.com) — roteamento client-side
+- [Vite 8](https://vitejs.dev) — build tool e dev server
 - [i18next](https://www.i18next.com) + [react-i18next](https://react.i18next.com) — internacionalização (PT/EN)
 - [react-markdown](https://github.com/remarkjs/react-markdown) — renderização do conteúdo dos posts
 - [Lucide Icons](https://lucide.dev) — biblioteca de ícones
 - CSS puro com variáveis customizadas
 
+Página única com navegação por scroll suave — sem roteador.
+
 **Conteúdo & infraestrutura**
 - Markdown com frontmatter YAML como CMS leve (`public/posts/`)
+- [js-yaml](https://github.com/nodeca/js-yaml) — parser de frontmatter, compartilhado entre o runtime e o script de tradução (`src/lib/frontmatter.js`)
+- [gray-matter](https://github.com/jonschlinkert/gray-matter) — leitura/escrita dos posts no script de tradução, apontado para o mesmo schema YAML
 - [Cloudinary](https://cloudinary.com) — hospedagem e otimização de imagens (entrega WebP/AVIF automática via CDN)
-- [gray-matter](https://github.com/jonschlinkert/gray-matter) — parser de frontmatter no script de tradução
-- Deploy: GitHub + integração CI/CD
 
 ## IAs no fluxo de desenvolvimento
 
-- **[Google Gemini](https://ai.google.dev)** (`gemini-3.1-flash-lite`) — tradução automática PT → EN em tempo de build (`scripts/translate.mjs`). Cada arquivo `*-pt.md` é traduzido em lote, preservando markdown, nomes próprios e termos técnicos.
+- **[Google Gemini](https://ai.google.dev)** (`gemini-3.1-flash-lite`) — tradução automática PT → EN (`scripts/translate.mjs`). Cada arquivo `*-pt.md` é traduzido em lote, preservando markdown, nomes próprios e termos técnicos. O que já foi traduzido é rastreado por hash em `scripts/translations.lock.json`, então só o conteúdo que mudou de fato é reenviado — e **o build não depende da chave de API**: sem ela, os `-en.md` commitados são usados como estão.
 - **[Claude](https://www.anthropic.com/claude)** (Anthropic) — pair programming na arquitetura, refactors, parser, pipeline de i18n e geração de componentes.
 
 ## Documentação interna
 
 - [`GUIA_CONTEUDO.md`](./GUIA_CONTEUDO.md) — como adicionar/editar eventos, projetos e a bio.
+- [`docs/REVIEW.md`](./docs/REVIEW.md) — review técnico do projeto: achados, severidade e backlog.
 - [`samples/`](./samples) — templates de frontmatter prontos para copiar.
+
+## Rodando localmente
+
+```bash
+npm install
+npm run dev
+```
+
+Para gerar traduções, copie `.env.example` para `.env` e preencha `GEMINI_API_KEY`.
 
 ## Licença
 

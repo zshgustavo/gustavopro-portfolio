@@ -35,3 +35,7 @@ coverage/
 
 # Misc
 *.local
+
+# Configuracao local do Claude Code (caminhos especificos da maquina)
+.claude/launch.json
+.claude/settings.local.json

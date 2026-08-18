@@ -12,7 +12,11 @@ Como adicionar, editar e organizar conteúdo deste portfólio (eventos, projetos
 public/posts/
 ├── about/
 │   ├── hero-pt.md        # Nome e cargo (linha superior do Hero)
+│   ├── hero-en.md        # Gerado automaticamente
 │   ├── main-pt.md        # Bio completa da seção "Sobre"
+│   └── main-en.md        # Gerado automaticamente
+├── contact/
+│   ├── main-pt.md        # Texto da seção "Contato"
 │   └── main-en.md        # Gerado automaticamente
 ├── events/
 │   ├── index.json        # Ordem dos cards exibidos
@@ -55,7 +59,7 @@ Tudo dentro de `public/posts/` é estático e servido pelo Vite no caminho `/pos
    ---
    ```
 
-3. **Suba o `cover.jpg`** no Cloudinary em `portfolio/events/<slug>/cover.jpg`.
+3. **Suba o `cover.jpg`** no Cloudinary em `gustavopro-portfolio/events/<slug>/cover.jpg`.
    - Slug: kebab-case, sem acento, sem espaço. Ex.: `tdc-summit-ia-2025`.
 
 4. **Adicione ao `index.json`** na posição desejada:
@@ -135,10 +139,28 @@ Depois adiciona ao `public/posts/projects/index.json` e roda `npm run translate`
 
 ```powershell
 npm run dev              # servidor local em http://localhost:5173
-npm run translate        # gera EN a partir dos PT mais novos (incremental)
+npm run translate        # gera EN para os PT que mudaram (incremental)
 npm run translate:force  # força regeneração de todos os EN
+npm run translate:check  # só verifica: sai com erro se algum EN estiver desatualizado
 npm run build            # build de produção (roda translate antes via prebuild)
 ```
+
+### Como o script decide o que traduzir
+
+O arquivo `scripts/translations.lock.json` guarda o hash SHA-256 de cada `*-pt.md`
+no momento em que o `-en.md` foi gerado. Um arquivo é considerado desatualizado
+quando o hash do PT mudou, quando o `-en.md` não existe, ou com `--force`.
+
+Duas consequências práticas:
+
+- **Mover, renomear ou reformatar sem mudar o texto não dispara retradução** —
+  o que conta é o conteúdo, não a data de modificação.
+- **O build não precisa da `GEMINI_API_KEY`.** Sem a chave, o script avisa quais
+  arquivos estão desatualizados e mantém os `-en.md` commitados. Ele nunca
+  derruba o `npm run build`. Use `npm run translate:check` (em CI ou antes de um
+  commit) quando quiser que "desatualizado" vire erro.
+
+O `translations.lock.json` **é versionado** — commite-o junto com os `-en.md`.
 
 ---
 
@@ -148,7 +170,9 @@ npm run build            # build de produção (roda translate antes via prebuil
 Provavelmente o arquivo foi salvo com line endings CRLF. Verifique em `Get-Content public\posts\events\event-N-pt.md | Format-Hex | Select -First 3` se há `0D 0A`. O `.gitattributes` na raiz força LF; rode `git add --renormalize .` se precisar limpar.
 
 **"A versão EN ficou desatualizada após eu editar o PT"**
-Rode `npm run translate`. Se o EN ainda parecer cacheado, `npm run translate:force`.
+Rode `npm run translate`. Para conferir sem gastar chamada de API, use
+`npm run translate:check` — ele lista o que está fora de sincronia. Se quiser
+regenerar tudo (por exemplo após trocar de modelo), `npm run translate:force`.
 
 **"Mudei o arquivo mas o dev server não reflete"**
 Hard refresh no navegador (Ctrl+Shift+R) ou reinicie `npm run dev`.
