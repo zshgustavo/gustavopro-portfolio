@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Components
@@ -9,42 +8,24 @@ import Projects from './components/Projects'
 import Events from './components/Events'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import SocialIcons from './components/SocialIcons'
 import BackToTop from './components/BackToTop'
 
 function App() {
-  const { t, i18n } = useTranslation()
-  const [isLoading, setIsLoading] = useState(true)
+  const { i18n } = useTranslation()
 
-  // Simulate initial loading for smooth animations
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [])
-
-  // Function to change language
+  // Change language and remember the choice (see src/i18n.js).
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang)
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex-center" style={{ minHeight: '100vh' }}>
-        <div className="loading-spinner"></div>
-      </div>
-    )
   }
 
   return (
     <div className="app">
       {/* Navigation with language switcher */}
-      <Navbar 
-        currentLang={i18n.language} 
-        onChangeLang={changeLanguage} 
+      <Navbar
+        currentLang={i18n.language}
+        onChangeLang={changeLanguage}
       />
-      
+
       {/* Main Content Sections */}
       <main>
         <Hero />
@@ -53,7 +34,7 @@ function App() {
         <Events />
         <Contact />
       </main>
-      
+
       {/* Footer with social icons */}
       <Footer />
 

@@ -1,31 +1,36 @@
 {
   "name": "portfolio-website",
   "version": "1.0.0",
+  "private": true,
   "description": "Personal portfolio website with markdown content management",
   "type": "module",
+  "author": "Gustavo Ribeiro dos Santos",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "translate": "node scripts/translate.mjs",
     "translate:force": "node scripts/translate.mjs --force",
+    "translate:check": "node scripts/translate.mjs --check",
     "prebuild": "node scripts/translate.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },
   "keywords": ["portfolio", "react", "markdown"],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "gray-matter": "^4.0.3",
     "i18next": "^25.7.2",
+    "js-yaml": "^4.1.0",
     "lucide-react": "^0.556.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-i18next": "^16.4.0",
-    "react-markdown": "^10.1.0",
-    "react-router-dom": "^7.10.1"
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.2.0",
+    "gray-matter": "^4.0.3",
     "vite": "^8.0.16"
   }
 }

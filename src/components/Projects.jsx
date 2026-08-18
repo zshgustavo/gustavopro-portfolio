@@ -27,49 +27,10 @@ import { ExternalLink, Github } from 'lucide-react'
 function Projects() {
   const { t, i18n } = useTranslation()
 
-  // Load projects list (per current language)
+  // Load projects list (per current language). Every project listed in
+  // posts/projects/index.json is shown — the `featured` flag in frontmatter
+  // stays available for future use, e.g. a badge or custom sorting.
   const { items: projects, isLoading } = useContentList('projects', i18n.language)
-
-  // Default sample projects for initial setup
-  const defaultProjects = [
-    {
-      id: 1,
-      title: 'Projeto Exemplo 1',
-      description: 'Descrição do primeiro projeto. Edite em /posts/projects/',
-      thumbnail: '/images/projects/project1.png',
-      codeUrl: 'https://github.com',
-      siteUrl: 'https://example.com',
-      featured: true,
-      tags: ['react', 'javascript']
-    },
-    {
-      id: 2,
-      title: 'Projeto Exemplo 2',
-      description: 'Descrição do segundo projeto. Adicione seus projetos!',
-      thumbnail: '/images/projects/project2.png',
-      codeUrl: 'https://github.com',
-      siteUrl: '',
-      featured: false,
-      tags: ['nodejs', 'mongodb']
-    },
-    {
-      id: 3,
-      title: 'Projeto Exemplo 3',
-      description: 'Mais um projeto de exemplo para demonstração.',
-      thumbnail: '/images/projects/project3.png',
-      codeUrl: 'https://github.com',
-      siteUrl: 'https://example.com',
-      featured: true,
-      tags: ['typescript', 'react']
-    }
-  ]
-
-  const displayProjects = projects.length > 0 ? projects : defaultProjects
-
-  // Show every project listed in posts/projects/index.json.
-  // (The `featured` flag in frontmatter stays available for future use,
-  // e.g. highlighting a "featured" badge or sorting.)
-  const filteredProjects = displayProjects
 
   return (
     <section className="projects-section section" id="projects">
@@ -87,7 +48,7 @@ function Projects() {
           </div>
         ) : (
           <div className="projects-grid">
-            {filteredProjects.map((project, index) => (
+            {projects.map((project, index) => (
               <ProjectCard
                 key={project.id || index}
                 project={project}

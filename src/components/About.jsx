@@ -17,29 +17,9 @@ import { ArrowRight } from 'lucide-react'
  */
 function About() {
   const { t, i18n } = useTranslation()
-  
-  // Load about content based on current language
-  const lang = i18n.language
-  const { content: aboutContent, isLoading } = useContent('about', `main-${lang}`)
-  
-  // Fallback to default language if translation doesn't exist
-  const { content: fallbackContent } = useContent('about', 'main-pt')
-  
-  const content = aboutContent || fallbackContent
 
-  // Default content if no markdown file exists yet
-  const defaultAbout = {
-    title: t('about.title'),
-    subtitle: t('about.trajectory'),
-    body: `Aqui você pode escrever sobre sua trajetória profissional, experiências e objetivos. 
-    
-Para editar este conteúdo, crie ou modifique o arquivo \`/posts/about/main-pt.md\` ou \`/posts/about/main-en.md\` para a versão em inglês.
-
-Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`,
-    image: '/images/about.jpg'
-  }
-
-  const displayContent = content || defaultAbout
+  // The hook falls back across languages internally (main-<lang> → main-pt).
+  const { content, isLoading } = useContent('about', 'main', i18n.language)
 
   return (
     <section className="about-section section section-light" id="about">
@@ -75,7 +55,7 @@ Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`
 
           {/* Right Side - Content */}
           <div className="about-right">
-            <h2>{displayContent.title || t('about.title')}</h2>
+            <h2>{content?.title || t('about.title')}</h2>
 
             <div className="about-separator"></div>
 
@@ -83,14 +63,12 @@ Use markdown para formatar seu texto com **negrito**, *itálico*, e muito mais.`
               {isLoading ? (
                 <p>{t('common.loading')}</p>
               ) : (
-                <ReactMarkdown>
-                  {displayContent.body}
-                </ReactMarkdown>
+                content?.body && <ReactMarkdown>{content.body}</ReactMarkdown>
               )}
             </div>
 
-            {displayContent.readMoreLink && (
-              <a href={displayContent.readMoreLink} className="read-more-btn">
+            {content?.readMoreLink && (
+              <a href={content.readMoreLink} className="read-more-btn">
                 {t('about.readMore')}
                 <ArrowRight size={16} />
               </a>

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import ReactMarkdown from 'react-markdown'
 import { useContent } from '../hooks/useContent'
 import SocialIcons from './SocialIcons'
 
@@ -21,11 +22,9 @@ function Contact() {
   const { t, i18n } = useTranslation()
 
   const lang = i18n.language
-  const { content: contactContent } = useContent('contact', `main-${lang}`)
-  const { content: fallbackContent } = useContent('contact', 'main-pt')
-  const content = contactContent || fallbackContent
+  const { content } = useContent('contact', 'main', lang)
 
-  const badgeLocale = lang === 'pt' ? 'pt_BR' : 'en_US'
+  const badgeLocale = lang.startsWith('pt') ? 'pt_BR' : 'en_US'
 
   const badgeHtml = `
     <div class="badge-base LI-profile-badge"
@@ -75,9 +74,13 @@ function Contact() {
 
             <div className="about-separator"></div>
 
-            <p className="contact-text">
-              {content?.body || t('contact.subtitle')}
-            </p>
+            <div className="contact-text">
+              {content?.body ? (
+                <ReactMarkdown>{content.body}</ReactMarkdown>
+              ) : (
+                <p>{t('contact.subtitle')}</p>
+              )}
+            </div>
 
             <div className="contact-socials">
               <SocialIcons variant="dark" />
