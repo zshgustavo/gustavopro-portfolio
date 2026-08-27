@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import SocialIcons from './SocialIcons'
 import { useContent } from '../hooks/useContent'
+import { usePageMetadata } from '../hooks/usePageMetadata'
 
 /**
  * Hero — Terminal direction: `// role` eyebrow in mono, stacked name at 80px,
@@ -22,6 +23,14 @@ function Hero() {
   const description = content?.description
   const photo = content?.photo
   const stats = Array.isArray(content?.stats) ? content.stats : []
+
+  usePageMetadata({
+    name,
+    role,
+    description,
+    photo,
+    lang: i18n.language,
+  })
 
   return (
     <header className="hero sec--dark" id="hero">

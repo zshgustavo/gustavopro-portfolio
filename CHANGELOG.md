@@ -8,6 +8,13 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o 
 
 Mudanças aqui ficam pendentes até o próximo commit.
 
+### Adicionado
+- Metadados Open Graph, Twitter Card e JSON-LD `Person`, usando a bio, a função e a foto já existentes no Hero.
+- URL canônica, `robots.txt` e `sitemap.xml` para a rota única do portfólio.
+
+### Alterado
+- Título, descrição e metadados sociais acompanham o idioma carregado (PT/EN), assim como o atributo `<html lang>` já acompanhava.
+
 ---
 
 ## [2026-08-18] — Links sociais viram conteúdo
