@@ -30,6 +30,7 @@ Página única com navegação por scroll suave — sem roteador. O design syste
 
 - [`GUIA_CONTEUDO.md`](./GUIA_CONTEUDO.md) — como adicionar/editar eventos, projetos e a bio.
 - [`docs/REVIEW.md`](./docs/REVIEW.md) — review técnico do projeto: achados, severidade e backlog.
+- [`claude/estado-do-repo-2026-08-27.md`](./claude/estado-do-repo-2026-08-27.md) — estado mais recente, validações e próxima frente recomendada.
 - [`samples/`](./samples) — templates de frontmatter prontos para copiar.
 
 ## Rodando localmente
